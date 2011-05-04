@@ -1,0 +1,108 @@
+language messages en_US
+set encoding=utf-8
+set nocompatible
+syntax on
+
+if has('mouse')
+  set mouse=a
+endif
+
+set visualbell
+set backspace=indent,eol,start
+set nobackup
+set noswapfile
+set history=50
+set ruler
+set showcmd
+set incsearch
+set ignorecase
+set smartcase
+set hlsearch
+
+filetype plugin indent on
+autocmd FileType text setlocal textwidth=79
+
+set tabstop=4
+set shiftwidth=4
+set smarttab
+set expandtab
+
+"
+let python_highlight_all=1
+
+"ruby specific
+:autocmd Filetype ruby set softtabstop=2
+:autocmd Filetype ruby set shiftwidth=2
+:autocmd Filetype ruby set tabstop=2
+
+set nu
+
+nnoremap / /\v
+vnoremap / /\v
+
+"pretty whitespaces highlight 
+set listchars=tab:▸\ ,eol:¬ 
+autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬ 
+highlight SpecialKey guifg=#505070
+
+
+"turn off arrow keys in normal and insert modes
+"nnoremap <up> <nop>
+"nnoremap <down> <nop>
+"nnoremap <left> <nop>
+"nnoremap <right> <nop>
+"inoremap <up> <nop>
+"inoremap <down> <nop>
+"inoremap <left> <nop>
+"inoremap <right> <nop>
+
+nnoremap j gj
+nnoremap k gk
+
+"more convenient way to return to normal mode from insert mode
+inoremap jj <ESC>
+
+"remap <leader> to , key
+let mapleader = ","
+
+"toggle whitespace highlighting
+nmap <leader>l :set list!<CR> 
+
+"delete to the end of line
+nmap <leader>d d$
+
+"call CommandT
+nnoremap <leader>t :CommandT<CR>
+
+"use <tab> to jump to matching bracket
+nnoremap <tab> %
+vnoremap <tab> %
+
+"for more rapid command insertion
+nnoremap ; :
+
+"edit and reload vimrc (this file)
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+"nmap <silent> <leader>sv :so $MYVIMRC<CR>
+
+"change working directory automatically
+"set autochdir
+ 
+" Command-T configuration
+let g:CommandTMaxHeight=15
+
+if has("gui_running")
+    set mousehide "Hide the mouse when typing text
+
+    set guioptions-=T
+
+    if has("gui_mac") || has("gui_macvim")
+        set gfn=Menlo\ Regular:h12
+    endif
+
+    if has("gui_win32") || has("gui_win32s")
+        set gfn=Consolas:h10.5:cDEFAULT
+    endif
+
+    colorscheme delek
+endif
