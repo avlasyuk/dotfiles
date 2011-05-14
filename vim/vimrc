@@ -92,10 +92,11 @@ nmap <silent> <leader>ev :e $MYVIMRC<CR>
 let g:CommandTMaxHeight=15
 
 if has("gui_running")
-    set mousehide "Hide the mouse when typing text
+    set mousehide "hide the mouse when typing text
 
-    set guioptions-=T
+    set guioptions-=T "get rid of toolbar
 
+    "set fancy font
     if has("gui_mac") || has("gui_macvim")
         set gfn=Menlo\ Regular:h12
     endif
