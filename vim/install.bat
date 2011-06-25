@@ -7,4 +7,4 @@ del "%home%\_vimrc"
 rmdir "%home%\vimfiles"
 
 mklink /d "%home%\vimfiles" "%cd%"
-mklink "%home%\_vimrc" "%cd%\_vimrc"
+mklink "%home%\_vimrc" "%cd%\vimrc"
