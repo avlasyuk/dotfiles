@@ -1,52 +1,63 @@
 language messages en_US
 set encoding=utf-8
-set nocompatible
-syntax on
 
+" get rid of legacy stuff
+set nocompatible
+set backspace=indent,eol,start
+
+" turn on syntax highligh and line numbers by default
+syntax on
+set nu
+
+" use system clipboard 
+set clipboard=unnamed
+
+" enable mouse support
 if has('mouse')
   set mouse=a
 endif
 
+" turn off annoying beep sound
 set visualbell
-set backspace=indent,eol,start
+
+" NOTE: shall think about better backup strategy
 set nobackup
 set noswapfile
+
 set history=50
 set ruler
 set showcmd
+
+" search settings
 set incsearch
 set ignorecase
 set smartcase
 set hlsearch
 
+" indentation settings
 filetype plugin indent on
 autocmd FileType text setlocal textwidth=79
-
 set tabstop=4
 set shiftwidth=4
 set smarttab
 set expandtab
-
-"
-let python_highlight_all=1
-
-"ruby specific
+" ruby specific
 :autocmd Filetype ruby set softtabstop=2
 :autocmd Filetype ruby set shiftwidth=2
 :autocmd Filetype ruby set tabstop=2
 
-set nu
+let python_highlight_all=1
 
 nnoremap / /\v
 vnoremap / /\v
 
-"pretty whitespaces highlight 
+" pretty whitespaces highlight 
 set listchars=tab:▸\ ,eol:¬ 
 autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬ 
 highlight SpecialKey guifg=#505070
 
 
-"turn off arrow keys in normal and insert modes
+" turn off arrow keys in normal and insert modes
 "nnoremap <up> <nop>
 "nnoremap <down> <nop>
 "nnoremap <left> <nop>
@@ -59,33 +70,33 @@ highlight SpecialKey guifg=#505070
 nnoremap j gj
 nnoremap k gk
 
-"more convenient way to return to normal mode from insert mode
+" more convenient way to return to normal mode from insert mode
 inoremap jj <ESC>
 
-"remap <leader> to , key
+" remap <leader> to , key
 let mapleader = ","
 
-"toggle whitespace highlighting
+" toggle whitespace highlighting
 nmap <leader>l :set list!<CR> 
 
-"delete to the end of line
+" delete to the end of line
 nmap <leader>d d$
 
-"call CommandT
+" call CommandT
 nnoremap <leader>t :CommandT<CR>
 
-"use <tab> to jump to matching bracket
+" use <tab> to jump to matching bracket
 nnoremap <tab> %
 vnoremap <tab> %
 
-"for more rapid command insertion
+" for more rapid command insertion
 nnoremap ; :
 
-"edit and reload vimrc (this file)
+" edit and reload vimrc (this file)
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 "nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
-"change working directory automatically
+" change working directory automatically
 "set autochdir
  
 " Command-T configuration
