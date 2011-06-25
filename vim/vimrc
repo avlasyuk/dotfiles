@@ -1,26 +1,26 @@
 language messages en_US
 set encoding=utf-8
 
-" get rid of legacy stuff
+" Get rid of legacy stuff
 set nocompatible
 set backspace=indent,eol,start
 
-" turn on syntax highligh and line numbers by default
+" Turn on syntax highligh and line numbers by default
 syntax on
 set nu
 
-" use system clipboard 
+" Use system clipboard 
 set clipboard=unnamed
 
-" enable mouse support
+" Enable mouse support
 if has('mouse')
   set mouse=a
 endif
 
-" turn off annoying beep sound
+" Turn off annoying beep sound
 set visualbell
 
-" NOTE: shall think about better backup strategy
+" NOTE: Shall think about better backup strategy
 set nobackup
 set noswapfile
 
@@ -28,13 +28,13 @@ set history=50
 set ruler
 set showcmd
 
-" search settings
+" Search settings
 set incsearch
 set ignorecase
 set smartcase
 set hlsearch
 
-" indentation settings
+" Indentation settings
 filetype plugin indent on
 autocmd FileType text setlocal textwidth=79
 set tabstop=4
@@ -51,13 +51,13 @@ let python_highlight_all=1
 nnoremap / /\v
 vnoremap / /\v
 
-" pretty whitespaces highlight 
+" Pretty whitespaces highlight 
 set listchars=tab:▸\ ,eol:¬ 
 autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬ 
 highlight SpecialKey guifg=#505070
 
 
-" turn off arrow keys in normal and insert modes
+" Turn off arrow keys in normal and insert modes
 "nnoremap <up> <nop>
 "nnoremap <down> <nop>
 "nnoremap <left> <nop>
@@ -70,44 +70,48 @@ highlight SpecialKey guifg=#505070
 nnoremap j gj
 nnoremap k gk
 
-" more convenient way to return to normal mode from insert mode
+" More convenient way to return to normal mode from insert mode
 inoremap jj <ESC>
 
-" remap <leader> to , key
+" Remap <leader> to , key
 let mapleader = ","
 
-" toggle whitespace highlighting
+" Toggle whitespace highlighting
 nmap <leader>l :set list!<CR> 
 
-" delete to the end of line
+" Delete to the end of line
 nmap <leader>d d$
 
-" call CommandT
+" Call CommandT
 nnoremap <leader>t :CommandT<CR>
+" fixing ESC in OS X terminal
+let g:CommandTCancelMap=['<ESC>','<C-c>']
 
-" use <tab> to jump to matching bracket
+" Use <tab> to jump to matching bracket
 nnoremap <tab> %
 vnoremap <tab> %
 
-" for more rapid command insertion
+" For more rapid command insertion
 nnoremap ; :
 
-" edit and reload vimrc (this file)
+" Edit and reload vimrc (this file)
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
-"nmap <silent> <leader>sv :so $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
-" change working directory automatically
+" Change working directory automatically
 "set autochdir
  
 " Command-T configuration
 let g:CommandTMaxHeight=15
 
 if has("gui_running")
-    set mousehide "hide the mouse when typing text
+    " Hide the mouse when typing text
+    set mousehide 
 
-    set guioptions-=T "get rid of toolbar
+    " Get rid of toolbar
+    set guioptions-=T 
 
-    "set fancy font
+    " Set fancy font
     if has("gui_mac") || has("gui_macvim")
         set gfn=Menlo\ Regular:h12
     endif
@@ -116,5 +120,5 @@ if has("gui_running")
         set gfn=Consolas:h10.5:cDEFAULT
     endif
 
-    colorscheme delek
+    colorscheme molokai
 endif
