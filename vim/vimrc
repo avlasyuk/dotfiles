@@ -4,11 +4,12 @@ set encoding=utf-8
 " Get rid of legacy stuff
 set nocompatible
 set backspace=indent,eol,start
+set cursorline
 
 " Hide buffers instead of closing them
 set hidden
 
-" Turn on syntax highligh and show line numbers by default
+" Turn on syntax highlight and show line numbers by default
 syntax on
 set nu
 
@@ -63,17 +64,7 @@ set listchars=tab:▸\ ,eol:¬
 autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬ 
 highlight SpecialKey guifg=#505070
 
-
-" Turn off arrow keys in normal and insert modes
-"nnoremap <up> <nop>
-"nnoremap <down> <nop>
-"nnoremap <left> <nop>
-"nnoremap <right> <nop>
-"inoremap <up> <nop>
-"inoremap <down> <nop>
-"inoremap <left> <nop>
-"inoremap <right> <nop>
-
+" Jump over visual rows, not actual lines
 nnoremap j gj
 nnoremap k gk
 
@@ -92,7 +83,8 @@ nmap <leader>d d$
 " Call CommandT
 nnoremap <leader>t :CommandT<CR>
 " fixing ESC in OS X terminal
-let g:CommandTCancelMap=['<ESC>','<C-c>']
+"let g:CommandTCancelMap=['<ESC>','<C-c>']
+let g:CommandTMaxHeight=15
 
 " Use <tab> to jump to matching bracket
 nnoremap <tab> %
@@ -107,9 +99,6 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 " Change working directory automatically
 "set autochdir
- 
-" Command-T configuration
-let g:CommandTMaxHeight=15
 
 if has("gui_running")
     " Hide the mouse when typing text
@@ -120,12 +109,15 @@ if has("gui_running")
 
     " Set fancy font
     if has("gui_mac") || has("gui_macvim")
-        set gfn=Menlo\ Regular:h12
+        set gfn=Andale\ Mono:h13
     endif
 
     if has("gui_win32") || has("gui_win32s")
         set gfn=Consolas:h10.5:cDEFAULT 
     endif
-
-    colorscheme molokai
+else
+    set t_Co=256
 endif
+
+colorscheme molokai
+
