@@ -1,11 +1,14 @@
-language messages en_US
+language messages en_US 
 set encoding=utf-8
 
 " Get rid of legacy stuff
 set nocompatible
 set backspace=indent,eol,start
 
-" Turn on syntax highligh and line numbers by default
+" Hide buffers instead of closing them
+set hidden
+
+" Turn on syntax highligh and show line numbers by default
 syntax on
 set nu
 
@@ -19,12 +22,14 @@ endif
 
 " Turn off annoying beep sound
 set visualbell
+set noerrorbells
 
 " NOTE: Shall think about better backup strategy
 set nobackup
 set noswapfile
 
-set history=50
+set history=500
+set undolevels=500
 set ruler
 set showcmd
 
@@ -33,6 +38,8 @@ set incsearch
 set ignorecase
 set smartcase
 set hlsearch
+" Clear last search highlight on Return pressed in command mode
+nnoremap <CR> :noh<CR><CR>
 
 " Indentation settings
 filetype plugin indent on
@@ -117,7 +124,7 @@ if has("gui_running")
     endif
 
     if has("gui_win32") || has("gui_win32s")
-        set gfn=Consolas:h10.5:cDEFAULT
+        set gfn=Consolas:h10.5:cDEFAULT 
     endif
 
     colorscheme molokai
