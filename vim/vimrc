@@ -4,7 +4,6 @@ set encoding=utf-8
 " Get rid of legacy stuff
 set nocompatible
 set backspace=indent,eol,start
-set cursorline
 
 " Hide buffers instead of closing them
 set hidden
@@ -29,18 +28,21 @@ set noerrorbells
 set nobackup
 set noswapfile
 
+" Moar history
 set history=500
+" Moar undo levels
 set undolevels=500
+" Permanent ruler
 set ruler
 set showcmd
+" Highlight current line
+set cursorline
 
 " Search settings
 set incsearch
 set ignorecase
 set smartcase
 set hlsearch
-" Clear last search highlight on Return pressed in command mode
-nnoremap <CR> :noh<CR><CR>
 
 " Indentation settings
 filetype plugin indent on
@@ -56,29 +58,35 @@ set expandtab
 
 let python_highlight_all=1
 
+" Sane regexp syntax in search mode
 nnoremap / /\v
 vnoremap / /\v
-
-" Pretty whitespaces highlight 
-set listchars=tab:▸\ ,eol:¬ 
-autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬ 
-highlight SpecialKey guifg=#505070
-
-" Jump over visual rows, not actual lines
-nnoremap j gj
-nnoremap k gk
-
-" More convenient way to return to normal mode from insert mode
-inoremap jj <ESC>
 
 " Remap <leader> to , key
 let mapleader = ","
 
+" Pretty special characters highlighting
+set listchars=tab:▸\ ,eol:¬ 
+autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬ 
+highlight SpecialKey guifg=#505070
 " Toggle whitespace highlighting
-nmap <leader>l :set list!<CR> 
+nmap <silent> <leader>l :set list!<CR> 
+
+" Clear highlighted search results on Return pressed in command mode
+nnoremap <silent> <CR> :noh<CR><CR>
+
+" Jump over visual rows in wrapped text, not actual lines
+nnoremap j gj
+nnoremap k gk
+
+" For more rapid command insertion
+nnoremap ; :
+
+" More convenient way to return to normal mode from insert mode
+inoremap jj <ESC>
 
 " Delete to the end of line
-nmap <leader>d d$
+nmap D d$
 
 " Call CommandT
 nnoremap <leader>t :CommandT<CR>
@@ -89,9 +97,6 @@ let g:CommandTMaxHeight=15
 " Use <tab> to jump to matching bracket
 nnoremap <tab> %
 vnoremap <tab> %
-
-" For more rapid command insertion
-nnoremap ; :
 
 " Edit and reload vimrc (this file)
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -115,8 +120,6 @@ if has("gui_running")
     if has("gui_win32") || has("gui_win32s")
         set gfn=Consolas:h10.5:cDEFAULT 
     endif
-else
-    set t_Co=256
 endif
 
 colorscheme molokai
