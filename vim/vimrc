@@ -102,6 +102,10 @@ vnoremap <tab> %
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
+" Show YankRing buffers list
+nnoremap <silent> <leader>pp :YRShow<CR>
+inoremap <silent> <leader>pp :YRShow<CR>
+
 " Change working directory automatically
 "set autochdir
 
