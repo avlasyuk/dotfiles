@@ -5,6 +5,10 @@ set encoding=utf-8
 set nocompatible
 set backspace=indent,eol,start
 
+
+" Take me to where I was when last edited a file
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+
 " Hide buffers instead of closing them
 set hidden
 
@@ -33,7 +37,7 @@ set history=500
 " Moar undo levels
 set undolevels=500
 " Permanent ruler
-set ruler
+"set ruler
 set showcmd
 " Highlight current line
 set cursorline
