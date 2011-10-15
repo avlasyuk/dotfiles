@@ -123,6 +123,7 @@ if has("gui_running")
     " Set fancy font
     if has("gui_mac") || has("gui_macvim")
         set gfn=Andale\ Mono:h13
+        set fuoptions=background:Normal
     endif
 
     if has("gui_win32") || has("gui_win32s")
