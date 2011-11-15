@@ -133,3 +133,7 @@ endif
 
 colorscheme molokai
 
+function! StripWhitespace ()
+    exec ':%s/ \+$//gc'
+endfunction
+map <leader>s :call StripWhitespace ()<CR>
