@@ -106,6 +106,9 @@ let g:CommandTMaxHeight=15
 " Use <tab> to jump to matching bracket
 nnoremap <tab> %
 vnoremap <tab> %
+"I and A from isert mode
+inoremap <c-e> <esc>I
+inoremap <c-a> <esc>A
 
 " Edit and reload vimrc (this file)
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -147,8 +150,3 @@ map <leader>s :call StripWhitespace ()<CR>
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
 
-
-
-" Heresy
-inoremap <c-e> <esc>I
-inoremap <c-a> <esc>A
