@@ -1,0 +1,20 @@
+# use .bashrc_local for settings specific to one system
+[[ -f ~/.bashrc_local ]] && . ~/.bashrc_local
+
+alias reload!='. ~/.bashrc'
+
+alias ebash='vim ~/.bashrc'
+alias ..='cd ..'
+alias ls='ls --color -F'
+alias la='ls -A'
+
+alias glog="git log"
+alias gd='git diff'
+alias gc='git commit'
+alias gcam='git commit --amend'
+alias gco='git checkout'
+alias gb='git branch'
+alias gs='git status -sb' 
+alias gsr='git svn rebase'
+alias gsd='git svn dcommit'
+

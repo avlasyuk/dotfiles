@@ -4,5 +4,8 @@
 *.pyo
 *.log
 *.bak
+*.so
 *~
 vim/.netrwhist
+vim/ruby/command-t/ext-i386-mingw32.def
+
