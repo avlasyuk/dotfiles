@@ -1,16 +1,25 @@
+
 # use .bashrc_local for settings specific to one system
 [[ -f ~/.bashrc_local ]] && . ~/.bashrc_local
 
+export GREP_OPTIONS='--color=auto'
+
 alias reload!='. ~/.bashrc'
-
 alias ebash='vim ~/.bashrc'
-alias ..='cd ..'
-alias ls='ls --color -F'
-alias la='ls -A'
 
-alias glog="git log"
+if [ `uname` == "Darwin" ]; then
+  export LSCOLORS=ExGxFxDxCxHxHxCbCeEbEb
+else
+  alias ls='ls --color=auto'
+fi
+alias la='ls -A'
+alias ..='cd ..'
+
+alias glog='git log'
 alias gd='git diff'
 alias gc='git commit'
+alias gca='git commit -a'
+alias gca!='git commit -a -m "^_^"'
 alias gcam='git commit --amend'
 alias gco='git checkout'
 alias gb='git branch'
