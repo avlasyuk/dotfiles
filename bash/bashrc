@@ -1,9 +1,7 @@
-
 # use .bashrc_local for settings specific to one system
 [[ -f ~/.bashrc_local ]] && . ~/.bashrc_local
 
 export CLICOLOR=1
-export GREP_OPTIONS='--color=auto'
 
 alias reload!='. ~/.bashrc'
 alias ebash='vim ~/.bashrc'
@@ -14,6 +12,8 @@ fi
 alias la='ls -A'
 alias ..='cd ..'
 
+# Git
+
 alias glog='git log'
 alias gd='git diff'
 alias gc='git commit'
@@ -23,6 +23,14 @@ alias gcam='git commit --amend'
 alias gco='git checkout'
 alias gb='git branch'
 alias gs='git status -sb' 
+
+# git-svn
 alias gsr='git svn rebase'
 alias gsd='git svn dcommit'
 
+alias gignore!='git status -s | sed -n -e "s/?? //p" >> .gitignore'
+
+# update current branch from remote branch with the same name in origin repo
+alias gpull='git name-rev --name-only HEAD | xargs git pull origin'
+# and push it
+alias gpush='git name-rev --name-only HEAD | xargs git push origin'
