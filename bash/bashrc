@@ -30,7 +30,10 @@ alias gsd='git svn dcommit'
 
 alias gignore!='git status -s | sed -n -e "s/?? //p" >> .gitignore'
 
+alias gbname='git name-rev --name-only HEAD'
+
 # update current branch from remote branch with the same name in origin repo
-alias gpull='git name-rev --name-only HEAD | xargs git pull origin'
+alias gpull='gbname | xargs git pull origin'
 # and push it
-alias gpush='git name-rev --name-only HEAD | xargs git push origin'
+alias gpush='gbname | xargs git push origin'
+
