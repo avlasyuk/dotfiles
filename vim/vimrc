@@ -139,7 +139,9 @@ if has("gui_running")
     endif
 endif
 
-colorscheme molokai
+let g:solarized_termcolors=256
+set background=dark
+colorscheme solarized
 
 " Strip whitespace in file
 function! StripWhitespace ()
