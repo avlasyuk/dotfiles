@@ -1,16 +1,18 @@
-
 # use .bashrc_local for settings specific to one system
 [[ -f ~/.bashrc_local ]] && . ~/.bashrc_local
 
-export CLICOLOR=1
-export GREP_OPTIONS='--color=auto'
+export EDITOR=vim
+export HOMEBREW_EDITOR=vim
 
 alias reload!='. ~/.bashrc'
 alias ebash='vim ~/.bashrc'
 
-if [ ! `uname` == "Darwin" ]; then
+if [ `uname` == "Darwin" ]; then
+    export CLICOLOR=1
+else
     alias ls='ls --color=auto'
 fi
+
 alias la='ls -A'
 alias ..='cd ..'
 

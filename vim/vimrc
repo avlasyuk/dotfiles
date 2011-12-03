@@ -77,7 +77,7 @@ let mapleader = ","
 " Pretty special characters highlighting
 set listchars=tab:▸\ ,eol:¬ 
 autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬ 
-highlight SpecialKey guifg=#505070
+"highlight SpecialKey guifg=#303050
 " Toggle whitespace highlighting
 nmap <silent> <leader>l :set list!<CR> 
 
@@ -106,9 +106,9 @@ let g:CommandTMaxHeight=15
 " Use <tab> to jump to matching bracket
 nnoremap <tab> %
 vnoremap <tab> %
-"I and A from isert mode
-inoremap <c-e> <esc>I
-inoremap <c-a> <esc>A
+" Emacs
+inoremap <c-a> <esc>I
+inoremap <c-e> <esc>A
 
 " Edit and reload vimrc (this file)
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
