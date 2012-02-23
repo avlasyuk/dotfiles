@@ -19,25 +19,23 @@ alias ..='cd ..'
 # Git
 
 alias glog='git log'
+alias glogst='git log --stat'
 alias gd='git diff'
 alias gc='git commit'
 alias gca='git commit -a'
 alias gca!='git commit -a -m "^_^"'
-alias gcam='git commit --amend'
 alias gco='git checkout'
 alias gb='git branch'
 alias gs='git status -sb' 
+alias gmrsq='git merge --squash'
 
-# git-svn
-alias gsr='git svn rebase'
-alias gsd='git svn dcommit'
-
-alias gignore!='git status -s | sed -n -e "s/?? //p" >> .gitignore'
+# append all unversioned files to .gitignore
+alias gignore!='git status -s | sed -n -e "s#?? #/#p" >> .gitignore'
 
 alias gbname='git name-rev --name-only HEAD'
 
 # update current branch from remote branch with the same name in origin repo
-alias gbpull='gbname | xargs git pull origin'
+alias gpull="gbname | xargs -i git pull origin '{}':'{}'"
 # and push it
-alias gbpush='gbname | xargs git push origin'
+alias gpush="gbname | xargs -i git push origin '{}':'{}'"
 
