@@ -5,6 +5,25 @@ set encoding=utf-8
 set nocompatible
 set backspace=indent,eol,start
 
+" Plugins 
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'tpope/vim-fugitive'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'ervandew/supertab'
+Bundle 'wincent/Command-T'
+Bundle 'Raimondi/delimitMate'
+
+" SnipMate dependencies
+Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'tomtom/tlib_vim'
+Bundle 'snipmate-snippets'
+
+Bundle 'garbas/vim-snipmate'
+Bundle 'honza/snipmate-snippets'
 
 " Take me to where I was when last edited a file
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
@@ -74,7 +93,7 @@ vnoremap / /\v
 " Remap <leader> to , key
 let mapleader = ","
 
-" Pretty special characters highlighting
+" Whitespace highlighting
 set listchars=tab:▸\ ,eol:¬ 
 autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬ 
 "highlight SpecialKey guifg=#303050

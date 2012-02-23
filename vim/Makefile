@@ -1,5 +1,4 @@
 install:
-	rm -rf ~/.vim ~/.vimrc
-	ln -s `pwd` ~/.vim
+	rm ~/.vimrc
 	ln -s ~/.vim/vimrc ~/.vimrc
 
