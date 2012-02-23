@@ -35,7 +35,7 @@ alias gignore!='git status -s | sed -n -e "s#?? #/#p" >> .gitignore'
 alias gbname='git name-rev --name-only HEAD'
 
 # update current branch from remote branch with the same name in origin repo
-alias gpull="gbname | xargs -i git pull origin '{}':'{}'"
+alias gbpull="gbname | xargs -i git pull origin '{}':'{}'"
 # and push it
-alias gpush="gbname | xargs -i git push origin '{}':'{}'"
+alias gbpush="gbname | xargs -i git push origin '{}':'{}'"
 
