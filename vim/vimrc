@@ -16,14 +16,14 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'ervandew/supertab'
 Bundle 'wincent/Command-T'
 Bundle 'Raimondi/delimitMate'
-
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-repeat'
 " SnipMate dependencies
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'tomtom/tlib_vim'
 Bundle 'snipmate-snippets'
 
 Bundle 'garbas/vim-snipmate'
-Bundle 'honza/snipmate-snippets'
 
 " Take me to where I was when last edited a file
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
@@ -133,9 +133,8 @@ inoremap <c-e> <esc>A
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
-" Show YankRing buffers list
-nnoremap <silent> <leader>pp :YRShow<CR>
-inoremap <silent> <leader>pp :YRShow<CR>
+" Surround word with following symbol
+nmap <leader>s ysiw
 
 " Change working directory automatically
 "set autochdir
@@ -162,11 +161,11 @@ let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
 
-" Strip whitespace in file
+" Strip whitepace in file
 function! StripWhitespace ()
     exec ':%s/ \+$//gc'
 endfunction
-map <leader>s :call StripWhitespace ()<CR>
+map <leader>w :call StripWhitespace ()<CR>
 
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
