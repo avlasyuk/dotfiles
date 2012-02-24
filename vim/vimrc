@@ -14,7 +14,8 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-fugitive'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'ervandew/supertab'
-Bundle 'wincent/Command-T'
+"Bundle 'wincent/Command-T'
+Bundle 'kien/ctrlp.vim'
 Bundle 'Raimondi/delimitMate'
 
 " SnipMate dependencies
@@ -158,7 +159,7 @@ if has("gui_running")
     endif
 endif
 
-let g:solarized_termcolors=256
+"let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
 
@@ -171,3 +172,5 @@ map <leader>s :call StripWhitespace ()<CR>
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
 
+let g:ctrlp_working_path_mode=0
+let g:ctrlp_max_height=15
