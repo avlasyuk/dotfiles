@@ -118,10 +118,10 @@ inoremap jj <ESC>
 nmap D d$
 
 " Call CommandT
-nnoremap <leader>t :CommandT<CR>
-" fixing ESC in OS X terminal
-"let g:CommandTCancelMap=['<ESC>','<C-c>']
-let g:CommandTMaxHeight=15
+"nnoremap <leader>t :CommandT<CR>
+"" fixing ESC in OS X terminal
+""let g:CommandTCancelMap=['<ESC>','<C-c>']
+"let g:CommandTMaxHeight=15
 
 " Use <tab> to jump to matching bracket
 nnoremap <tab> %
@@ -172,5 +172,11 @@ map <leader>s :call StripWhitespace ()<CR>
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
 
+" CtrlP
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_max_height=15
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.obj$\|\.lib$',
+    \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+    \ }
