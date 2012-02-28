@@ -36,5 +36,9 @@ alias gbpull="gbname | xargs -i git pull origin '{}':'{}'"
 # and push it
 alias gbpush="gbname | xargs -i git push origin '{}':'{}'"
 
+# Screen
+alias scr='screen -s /bin/bash'
+
 # use .bashrc_local for settings specific to one system
 [[ -f ~/.bashrc_local ]] && . ~/.bashrc_local
+
