@@ -1,5 +1,5 @@
-language messages en_US 
 set encoding=utf-8
+language messages en_US.utf8 
 
 " Get rid of legacy stuff
 set nocompatible
