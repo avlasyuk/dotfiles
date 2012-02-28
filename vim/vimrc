@@ -1,5 +1,5 @@
 set encoding=utf-8
-language messages en_US.utf8 
+"language messages en_US.utf8 
 
 " Get rid of legacy stuff
 set nocompatible
@@ -108,7 +108,8 @@ autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬
 nmap <silent> <leader>l :set list!<CR> 
 
 " Clear highlighted search results on Return pressed in command mode
-nnoremap <silent> <CR> :noh<CR><CR>
+noremap <silent> <leader>c :nohls<CR>
+"nnoremap <silent> <CR> :noh<CR><CR>
 
 " Jump over visual rows in wrapped text, not actual lines
 nnoremap j gj
@@ -185,3 +186,4 @@ let g:ctrlp_custom_ignore = {
     \ 'file': '\.exe$\|\.so$\|\.dll$\|\.obj$\|\.lib$',
     \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
     \ }
+
