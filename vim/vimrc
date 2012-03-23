@@ -124,6 +124,10 @@ inoremap jj <ESC>
 " Delete to the end of line
 nmap D d$
 
+" Reselect visual block after indent/outdent
+vnoremap < <gv
+vnoremap > >gv
+
 " Call CommandT
 "nnoremap <leader>t :CommandT<CR>
 "" fixing ESC in OS X terminal
