@@ -14,11 +14,7 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-fugitive'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'ervandew/supertab'
-
-"Bundle 'wincent/Command-T'
 Bundle 'kien/ctrlp.vim'
-
-"Bundle 'Raimondi/delimitMate'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
 
@@ -29,8 +25,6 @@ Bundle 'snipmate-snippets'
 Bundle 'garbas/vim-snipmate'
 
 Bundle 'Lokaltog/vim-powerline'
-"Bundle 'nathanaelkane/vim-indent-guides'
-"Bundle 'klen/python-mode'
 Bundle 'python.vim'
 
 " Take me to where I was when last edited a file
@@ -126,20 +120,15 @@ inoremap jj <ESC>
 " Delete to the end of line
 nmap D d$
 
-" Call CommandT
-"nnoremap <leader>t :CommandT<CR>
-"" fixing ESC in OS X terminal
-""let g:CommandTCancelMap=['<ESC>','<C-c>']
-"let g:CommandTMaxHeight=15
-
 " Use <tab> to jump to matching bracket
 nnoremap <tab> %
 vnoremap <tab> %
+
 " Emacs
 inoremap <c-a> <esc>I
 inoremap <c-e> <esc>A
 
-" Edit and reload vimrc (this file)
+" Edit and reload vimrc
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
