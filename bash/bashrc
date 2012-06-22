@@ -33,8 +33,6 @@ alias gbname='git name-rev --name-only HEAD'
 
 # update current branch from remote branch with the same name in origin repo
 alias gbpull="gbname | xargs -i git pull origin '{}':'{}'"
-# and push it
-alias gbpush="gbname | xargs -i git push origin '{}':'{}'"
 
 # Screen
 alias scr='screen -s /bin/bash'
