@@ -1,5 +1,7 @@
 set encoding=utf-8
-"language messages en_US.utf8 
+if has('win32')
+    language messages en_US.utf8 
+endif
 
 " Get rid of legacy stuff
 set nocompatible
@@ -26,6 +28,7 @@ Bundle 'garbas/vim-snipmate'
 
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'python.vim'
+Bundle 'scrooloose/syntastic'
 
 " Take me to where I was when last edited a file
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
