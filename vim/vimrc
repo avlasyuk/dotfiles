@@ -107,7 +107,7 @@ autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬
 nmap <silent> <leader>l :set list!<CR> 
 
 " Clear highlighted search results on Return pressed in command mode
-noremap <silent> <leader>c :nohls<CR>
+noremap <silent> <leader>/ :nohls<CR>
 "nnoremap <silent> <CR> :noh<CR><CR>
 
 " Jump over visual rows in wrapped text, not actual lines
@@ -131,9 +131,31 @@ vnoremap <tab> %
 inoremap <c-a> <esc>I
 inoremap <c-e> <esc>A
 
+" Disable arrow keys
+"inoremap <Up> <NOP>
+"inoremap <Down> <NOP>
+"inoremap <Left> <NOP>
+"inoremap <Right> <NOP>
+"noremap <Up> <NOP>
+"noremap <Down> <NOP>
+"noremap <Left> <NOP>
+"noremap <Right> <NOP>
+
+" Move commands in inset mode
+imap <C-h> <C-o>h
+imap <C-j> <C-o>j
+imap <C-k> <C-o>k
+imap <C-l> <C-o>l
+
 " Edit and reload vimrc
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
+" automatically reload vimrc when it's saved
+augroup AutoReloadVimRC
+  au!
+  " automatically reload vimrc when it's saved
+  au BufWritePost $MYVIMRC so $MYVIMRC
+augroup END
 
 " Surround word with following symbol
 nmap <leader>s ysiw
