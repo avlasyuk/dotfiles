@@ -1,6 +1,9 @@
 export EDITOR=vim
 export HOMEBREW_EDITOR=vim
 
+# Save PWD at every prompt
+PROMPT_COMMAND='printf %s "$PWD" > ~/.storepwd'
+
 alias reload!='. ~/.bashrc'
 alias ebash='vim ~/.bashrc'
 
@@ -40,3 +43,5 @@ alias scr='screen -s /bin/bash'
 # use .bashrc_local for settings specific to one system
 [[ -f ~/.bashrc_local ]] && . ~/.bashrc_local
 
+# cd into last saved PWD
+cd "$(<~/.storepwd)"

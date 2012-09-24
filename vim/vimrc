@@ -196,10 +196,10 @@ au VimResized * exe "normal! \<c-w>="
 
 " CtrlP
 let g:ctrlp_working_path_mode=0
-let g:ctrlp_max_height=15
+let g:ctrlp_max_height=20
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.obj$\|\.lib$',
+    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.obj$\|\.lib$|\.pyc$|\.o$',
     \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
     \ }
 
