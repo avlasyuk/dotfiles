@@ -15,6 +15,8 @@ alias ..='cd ..'
 
 alias tmux="TERM=screen-256color-bce tmux"
 
+alias make="make -j8"
+
 # Git
 
 alias glog='git log --format=format:"%C(yellow)%H %Creset(%ar)%n%Cgreen%ae %an%n %Cred* %Creset%s%n"'
