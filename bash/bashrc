@@ -48,4 +48,4 @@ alias scr='screen -s /bin/bash'
 [[ -f ~/.bashrc_local ]] && . ~/.bashrc_local
 
 # cd into last saved PWD
-cd "$(<~/.storepwd)"
+[[ -f ~/.storepwd ]] && cd "$(<~/.storepwd)"
