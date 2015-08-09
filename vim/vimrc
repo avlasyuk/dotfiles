@@ -29,6 +29,7 @@ Bundle 'garbas/vim-snipmate'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'python.vim'
 Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/nerdtree'
 
 " Take me to where I was when last edited a file
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
@@ -191,15 +192,19 @@ function! StripWhitespace ()
 endfunction
 map <leader>w :call StripWhitespace ()<CR>
 
+map <leader>n :bnext<CR>
+map <leader>p :bprevious<CR>
+
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
 
 " CtrlP
 let g:ctrlp_working_path_mode=0
-let g:ctrlp_max_height=20
+let g:ctrlp_max_height=15
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.obj$\|\.lib$|\.pyc$|\.o$',
-    \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+    \ 'dir':  '\v[\/](\.git|genfiles)$',
+    \ 'file': '\v[\/]\.(exe|so|dll|obj|lib|pyc|o|d)$',
     \ }
+
+let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
 
