@@ -46,3 +46,6 @@ alias gbpull="gbname | xargs -i git pull origin '{}':'{}'"
 
 # cd into last saved PWD
 [[ -f ~/.storepwd ]] && cd "$(<~/.storepwd)"
+
+#if [[ $TMUX ]]; then source ~/.tmux-git/tmux-git.sh; fi
+
