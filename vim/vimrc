@@ -13,6 +13,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
+Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'ervandew/supertab'
 Plugin 'kien/ctrlp.vim'
 Plugin 'python.vim'
@@ -20,6 +21,9 @@ Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'a.vim'
+Plugin 'itchyny/lightline.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'junegunn/vim-easy-align'
 
 "Plugin 'Valloric/YouCompleteMe'
 "Plugin 'tpope/vim-dispatch'
@@ -68,11 +72,11 @@ set history=500
 " Moar undo levels
 set undolevels=500
 
-set ls=2 " Status line
+set laststatus=2
 " Permanent ruler
 "set ruler
 " Ruller: flags [format, encoding, type] line, col linesL
-set statusline=%50(%=%m%r%w\ %#comment#[%{&ff},\ %{strlen(&fenc)?&fenc:&enc},\ %{&ft}]%*\ %4l:%-3c\ (%P)\ %4LL%)
+"set statusline=%50(%=%m%r%w\ %#comment#[%{&ff},\ %{strlen(&fenc)?&fenc:&enc},\ %{&ft}]%*\ %4l:%-3c\ (%P)\ %4LL%)
 
 
 set showcmd
@@ -96,6 +100,8 @@ set expandtab
 :autocmd Filetype ruby set softtabstop=2
 :autocmd Filetype ruby set shiftwidth=2
 :autocmd Filetype ruby set tabstop=2
+
+autocmd FileType cpp set keywordprg=cppman
 
 let python_highlight_all=1
 
@@ -176,7 +182,7 @@ if has("gui_running")
 endif
 
 set background=dark
-colorscheme base16-default
+colorscheme base16-tomorrow
 
 " Strip whitepace in file
 function! StripWhitespace ()
@@ -199,6 +205,8 @@ map <leader>p :bprevious<CR>
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
 
+set formatoptions="tcqj"
+
 " CtrlP
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_max_height=17
@@ -219,8 +227,10 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
+let g:syntastic_cpp_check_header = 1
 
 let g:ycm_collect_identifiers_from_tags_files = 1
 
-so ~/.vimrc.local
-
+if filereadable(expand("~/.vimrc.local"))
+    so ~/.vimrc.local
+endif
