@@ -10,18 +10,17 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/base16-vim'
+Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'ervandew/supertab'
 Plugin 'kien/ctrlp.vim'
-"Plugin 'klen/python-mode'
+Plugin 'python.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdtree'
+Plugin 'rhysd/vim-clang-format'
 Plugin 'a.vim'
-"Plugin 'tpope/vim-fugitive'
-"Plugin 'tpope/vim-surround'
-"Plugin 'tpope/vim-repeat'
-Plugin 'Lokaltog/vim-powerline'
 Plugin 'scrooloose/syntastic'
 Plugin 'davidhalter/jedi-vim'
-Plugin 'chriskempson/vim-tomorrow-theme'
-Plugin 'chriskempson/base16-vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 " }}}
@@ -76,6 +75,8 @@ set expandtab
 
 autocmd FileType python setlocal completeopt-=preview
 let python_highlight_all=1
+
+set colorcolumn=80
 
 " Sane regexp syntax in search mode
 nnoremap / /\v
@@ -138,6 +139,9 @@ augroup END
 " Surround word with following symbol
 nmap <leader>s ysiw
 
+vmap <C-k> :ClangFormat<cr>
+nmap <C-k> :normal! v:ClangFormat<cr>
+
 " Change working directory automatically
 "set autochdir
 
@@ -162,10 +166,8 @@ if $TERM_PROGRAM =~ "iTerm"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 endif
 
-"let g:solarized_termcolors=256
-"
 set background=dark
-colorscheme base16-eighties
+colorscheme base16-default
 
 " No ESC lag
 set timeoutlen=1000 ttimeoutlen=0
@@ -176,18 +178,45 @@ function! StripWhitespace ()
 endfunction
 map <leader>w :call StripWhitespace ()<CR>
 
+set tags+=./tags;/
+set tags+=~/tags
+
+set complete-=i
+
+function! Ctags ()
+    exec ':!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaSl --extra=+q .'
+endfunction
+
+map <leader>n :bnext<CR>
+map <leader>p :bprevious<CR>
+
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
 
 " CtrlP
 let g:ctrlp_working_path_mode=0
-let g:ctrlp_max_height=20
+let g:ctrlp_max_height=17
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.obj$\|\.lib$|\.pyc$|\.o$',
-    \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+    \ 'dir':  '\v[\/](\.git|genfiles)$',
+    \ 'file': '\v[\/]\.(exe|so|dll|obj|lib|pyc|o|d)$',
     \ }
 
+let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
+
+let g:clang_format#detect_style_file=1
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+let g:ycm_collect_identifiers_from_tags_files = 1
+
+so ~/.vimrc.local
 let g:syntastic_cpp_compiler_options = '-std=c++0x'
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_auto_refresh_includes = 1
