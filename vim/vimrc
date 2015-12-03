@@ -13,14 +13,26 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
 Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'ervandew/supertab'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'python.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'a.vim'
-Plugin 'scrooloose/syntastic'
+Plugin 'itchyny/lightline.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'junegunn/vim-easy-align'
+Plugin 'mileszs/ack.vim'
+Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'davidhalter/jedi-vim'
+
+"Plugin 'Valloric/YouCompleteMe'
+"Plugin 'tpope/vim-dispatch'
+"Plugin 'bling/vim-airline'
+"Plugin 'tpope/vim-fugitive'
+"Plugin 'tpope/vim-surround'
+"Plugin 'tpope/vim-repeat'
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 " }}}
@@ -73,10 +85,12 @@ set expandtab
 :autocmd Filetype ruby set tabstop=2
 " }}}
 
+autocmd FileType cpp set keywordprg=cppman
+
 autocmd FileType python setlocal completeopt-=preview
 let python_highlight_all=1
 
-set colorcolumn=80
+set colorcolumn=79
 
 " Sane regexp syntax in search mode
 nnoremap / /\v
@@ -162,7 +176,7 @@ if $TERM_PROGRAM =~ "iTerm"
 endif
 
 set background=dark
-colorscheme base16-default
+colorscheme base16-tomorrow
 
 " No ESC lag
 set timeoutlen=1000 ttimeoutlen=0
@@ -188,6 +202,8 @@ map <leader>p :bprevious<CR>
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
 
+set formatoptions="tcqj"
+
 " CtrlP
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_max_height=17
@@ -204,16 +220,21 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+let g:syntastic_cpp_compiler_options = '-std=c++0x'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
-
-let g:ycm_collect_identifiers_from_tags_files = 1
-
-let g:syntastic_cpp_compiler_options = '-std=c++0x'
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_auto_refresh_includes = 1
 let g:syntastic_cpp_include_dirs = [ '/usr/local/include' ]
 
-so ~/.vimrc.local
+
+let g:ycm_collect_identifiers_from_tags_files = 1
+
+let g:ackprg = "ack -H --nocolor --nogroup --column"
+
+
+if filereadable(expand("~/.vimrc.local"))
+    so ~/.vimrc.local
+endif
