@@ -87,8 +87,6 @@ let mapleader = "," " Remap <leader> to , key
 " Whitespace highlighting
 set listchars=tab:▸\ ,trail:·
 "autocmd filetype html,xml set listchars-=tab:▸\ 
-"set listchars=tab:▸\ ,eol:¬
-"autocmd filetype html,xml set listchars-=tab:▸\ ,eol:¬
 highlight SpecialKey guifg=#303050
 " Toggle whitespace highlighting
 nmap <silent> <leader>l :set list!<CR>
@@ -102,9 +100,6 @@ noremap <silent> <leader>/ :nohls<CR>
 " Jump over visual rows in wrapped text, not actual lines
 nnoremap j gj
 nnoremap k gk
-
-" For more rapid command insertion
-nnoremap ; :
 
 " More convenient way to return to normal mode from insert mode
 inoremap jj <ESC>
@@ -216,9 +211,9 @@ let g:syntastic_check_on_wq = 0
 
 let g:ycm_collect_identifiers_from_tags_files = 1
 
-so ~/.vimrc.local
 let g:syntastic_cpp_compiler_options = '-std=c++0x'
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_auto_refresh_includes = 1
 let g:syntastic_cpp_include_dirs = [ '/usr/local/include' ]
 
+so ~/.vimrc.local
