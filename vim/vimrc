@@ -101,7 +101,6 @@ let mapleader = "," " Remap <leader> to , key
 " Whitespace highlighting
 set listchars=tab:▸\ ,trail:·
 "autocmd filetype html,xml set listchars-=tab:▸\ 
-highlight SpecialKey guifg=#303050
 " Toggle whitespace highlighting
 nmap <silent> <leader>l :set list!<CR>
 
