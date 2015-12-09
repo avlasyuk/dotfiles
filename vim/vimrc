@@ -25,8 +25,8 @@ Plugin 'junegunn/vim-easy-align'
 Plugin 'mileszs/ack.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'davidhalter/jedi-vim'
+Plugin 'Valloric/YouCompleteMe'
 
-"Plugin 'Valloric/YouCompleteMe'
 "Plugin 'tpope/vim-dispatch'
 "Plugin 'bling/vim-airline'
 "Plugin 'tpope/vim-fugitive'
@@ -215,9 +215,9 @@ let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
 
 let g:clang_format#detect_style_file=1
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 
 let g:syntastic_cpp_compiler_options = '-std=c++0x'
 let g:syntastic_always_populate_loc_list = 1
@@ -229,10 +229,11 @@ let g:syntastic_cpp_auto_refresh_includes = 1
 let g:syntastic_cpp_include_dirs = [ '/usr/local/include' ]
 
 
+let g:ycm_confirm_extra_conf = 0
 let g:ycm_collect_identifiers_from_tags_files = 1
-
-let g:ackprg = "ack -H --nocolor --nogroup --column"
-
+let g:ycm_always_populate_location_list = 1
+nnoremap gy :YcmCompleter GoTo<CR>
+nnoremap <leader>t :YcmCompleter GetType<CR>
 
 if filereadable(expand("~/.vimrc.local"))
     so ~/.vimrc.local
