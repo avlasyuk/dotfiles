@@ -1,15 +1,9 @@
-" {{{
 set nocompatible
-set backspace=indent,eol,start
-set visualbell
-set noerrorbells
-" }}}
-
 " Plugins {{{
+filetype off " required by Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'chriskempson/base16-vim'
 Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'ervandew/supertab'
@@ -18,8 +12,6 @@ Plugin 'python.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'rhysd/vim-clang-format'
-Plugin 'a.vim'
-"Plugin 'itchyny/lightline.vim'
 Plugin 'bling/vim-airline'
 Plugin 'majutsushi/tagbar'
 Plugin 'junegunn/vim-easy-align'
@@ -27,23 +19,26 @@ Plugin 'mileszs/ack.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'tpope/vim-git'
 
+"Plugin 'a.vim'
 "Plugin 'tpope/vim-dispatch'
-"Plugin 'bling/vim-airline'
 "Plugin 'tpope/vim-fugitive'
 "Plugin 'tpope/vim-surround'
 "Plugin 'tpope/vim-repeat'
-
-call vundle#end()            " required
-filetype plugin indent on    " required
+call vundle#end()
+filetype plugin indent on " required by Vundle
 " }}}
 
+set backspace=indent,eol,start
+set visualbell
+set noerrorbells
 syntax on
 set number " Line numbers
 
 set encoding=utf-8
 if has('win32')
-    language messages en_US.utf8 
+  language messages en_US.utf8
 endif
 
 if has('mouse')
@@ -53,7 +48,7 @@ endif
 set history=500
 set undolevels=500
 set hidden " Hide buffers instead of closing them
-set clipboard=unnamed " Use system clipboard 
+set clipboard=unnamed " Use system clipboard
 
 " NOTE: Shall think about better backup strategy
 set nobackup
@@ -74,16 +69,31 @@ set smartcase
 set hlsearch
 " }}}
 
+let ymapsdev = $YMAPSDEV
+
 " Indentation {{{
-filetype plugin indent on
-autocmd FileType text setlocal textwidth=79
-set tabstop=4
-set shiftwidth=4
 set smarttab
 set expandtab
-:autocmd Filetype ruby set softtabstop=2
-:autocmd Filetype ruby set shiftwidth=2
-:autocmd Filetype ruby set tabstop=2
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+
+autocmd FileType python
+      \ set tabstop=4 |
+      \ set softtabstop=4 |
+      \ set shiftwidth=4
+
+set textwidth=80
+set colorcolumn=81
+
+if ymapsdev
+  autocmd FileType cpp
+        \ set tabstop=4 |
+        \ set softtabstop=4 |
+        \ set shiftwidth=4 |
+        \ set textwidth=78 |
+        \ set colorcolumn=79
+endif
 " }}}
 
 autocmd FileType cpp set keywordprg=cppman
@@ -91,49 +101,38 @@ autocmd FileType cpp set keywordprg=cppman
 autocmd FileType python setlocal completeopt-=preview
 let python_highlight_all=1
 
-set colorcolumn=79
-
 " Sane regexp syntax in search mode
 nnoremap / /\v
 vnoremap / /\v
 
-let mapleader = "," " Remap <leader> to , key
+let mapleader = "\<Space>"
 
 " Whitespace highlighting
 set listchars=tab:▸\ ,trail:·
-"autocmd filetype html,xml set listchars-=tab:▸\ 
-" Toggle whitespace highlighting
-nmap <silent> <leader>l :set list!<CR>
-
 set list
 
 " Clear highlighted search results on Return pressed in command mode
-noremap <silent> <leader>/ :nohls<CR>
-"nnoremap <silent> <CR> :noh<CR><CR>
+nnoremap <silent> <CR> :nohls<CR>
 
 " Jump over visual rows in wrapped text, not actual lines
 nnoremap j gj
 nnoremap k gk
 
 " More convenient way to return to normal mode from insert mode
-inoremap jj <ESC>
+inoremap jj <Esc>
 
 " Delete to the end of line
 nmap D d$
+" Copy to the end of line
+nmap Y y$
 
 " Use <tab> to jump to matching bracket
 nnoremap <tab> %
 vnoremap <tab> %
 
 " Emacs
-inoremap <c-a> <esc>I
-inoremap <c-e> <esc>A
-
-" Move commands in inset mode
-imap <C-h> <C-o>h
-imap <C-j> <C-o>j
-imap <C-k> <C-o>k
-imap <C-l> <C-o>l
+inoremap <C-a> <Esc>I
+inoremap <C-e> <Esc>A
 
 " Edit and reload vimrc
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -141,38 +140,37 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " automatically reload vimrc when it's saved
 augroup AutoReloadVimRC
   au!
-  " automatically reload vimrc when it's saved
   au BufWritePost $MYVIMRC so $MYVIMRC
 augroup END
 
 " Surround word with following symbol
 nmap <leader>s ysiw
 
-vmap <C-k> :ClangFormat<cr>
-nmap <C-k> :normal! v:ClangFormat<cr>
+vnoremap <leader>f :ClangFormat<CR>
+nnoremap <leader>f :normal! v:ClangFormat<CR>
 
 " Change working directory automatically
 "set autochdir
 
 if has("gui_running")
-    " Hide the mouse when typing text
-    set mousehide 
-    " Get rid of toolbar
-    set guioptions-=T 
+  " Hide the mouse when typing text
+  set mousehide
+  " Get rid of toolbar
+  set guioptions-=T
 
-    if has("gui_mac") || has("gui_macvim")
-        set gfn=Menlo:h13
-        set fuoptions=background:Normal
-    endif
+  if has("gui_mac") || has("gui_macvim")
+    set gfn=Menlo:h13
+    set fuoptions=background:Normal
+  endif
 
-    if has("gui_win32") || has("gui_win32s")
-        set gfn=Consolas:h10.5:cDEFAULT 
-    endif
+  if has("gui_win32") || has("gui_win32s")
+    set gfn=Consolas:h10.5:cDEFAULT
+  endif
 endif
 " Change cursor shape between insert and normal mode in iTerm2.app
 if $TERM_PROGRAM =~ "iTerm"
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 endif
 
 set background=dark
@@ -183,7 +181,7 @@ set timeoutlen=1000 ttimeoutlen=0
 
 " Strip whitepace in file
 function! StripWhitespace ()
-    exec ':%s/ \+$//gc'
+  exec ':%s/ \+$//gc'
 endfunction
 map <leader>w :call StripWhitespace ()<CR>
 
@@ -192,9 +190,7 @@ set tags+=~/tags
 
 set complete-=i
 
-function! Ctags ()
-    exec ':!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaSl --extra=+q .'
-endfunction
+command! CTags exec ':!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaSl --extra=+q .'
 
 map <leader>n :bnext<CR>
 map <leader>p :bprevious<CR>
@@ -202,23 +198,27 @@ map <leader>p :bprevious<CR>
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
 
-set formatoptions="tcqj"
+" c - Auto-wrap comments using textwidth, inserting the current comment leader
+"     automatically.
+" r - Automatically insert the current comment leader after hitting <Enter> in
+"     Insert mode.
+" q - Allow formatting of comments with gq.
+" j - Where it makes sense, remove a comment leader when joining lines.
+set formatoptions="crqj"
+" Add doxygen style comment leader
+autocmd FileType c,cpp,java,javascript set comments^=:///
 
 " CtrlP
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_max_height=17
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/](\.git|genfiles)$',
-    \ 'file': '\v[\/]\.(exe|so|dll|obj|lib|pyc|o|d)$',
-    \ }
+      \ 'dir':  '\v[\/](\.git|genfiles)$',
+      \ 'file': '\v[\/]\.(exe|so|dll|obj|lib|pyc|o|d)$',
+      \ }
 
 let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
 
 let g:clang_format#detect_style_file=1
-
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
 
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'base16'
@@ -226,8 +226,8 @@ let g:airline_theme = 'base16'
 let g:syntastic_cpp_compiler_options = '-std=c++0x'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
+"let g:syntastic_check_on_open = 0
+"let g:syntastic_check_on_wq = 0
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_auto_refresh_includes = 1
 let g:syntastic_cpp_include_dirs = [ '/usr/local/include' ]
@@ -235,9 +235,10 @@ let g:syntastic_cpp_include_dirs = [ '/usr/local/include' ]
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_collect_identifiers_from_tags_files = 1
 
-nnoremap gy :YcmCompleter GoTo<CR>
-nnoremap <leader>t :YcmCompleter GetType<CR>
+nnoremap <leader>j :YcmCompleter GoTo<CR>
+nnoremap <leader>k :YcmCompleter GetType<CR>
+nnoremap <leader>o <C-o>
 
 if filereadable(expand("~/.vimrc.local"))
-    so ~/.vimrc.local
+  so ~/.vimrc.local
 endif
