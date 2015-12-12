@@ -1,5 +1,7 @@
 set nocompatible
-" Plugins {{{
+
+" Plugins
+"=============================================================================+
 filetype off " Required by Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -17,7 +19,7 @@ Plugin 'majutsushi/tagbar'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'mileszs/ack.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'davidhalter/jedi-vim'
+"Plugin 'davidhalter/jedi-vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'tpope/vim-git'
 Plugin 'tmhedberg/matchit'
@@ -30,12 +32,14 @@ Plugin 'tpope/vim-repeat'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+Plugin 'regedarek/ZoomWin'
 "Plugin 'tpope/vim-sleuth' " Guesses indentation settings from a buffer
 call vundle#end()
 filetype plugin indent on " Required by Vundle
-" }}}
+"-----------------------------------------------------------------------------+
 
-" Modern defaults {{{
+" Modern defaults
+"=============================================================================+
 set backspace=indent,eol,start
 " Turns off all error bells, visual or otherwise
 " from https://github.com/Valloric/dotfiles/blob/master/vim/vimrc.vim
@@ -48,7 +52,7 @@ set hidden " Hide buffers instead of closing them
 set clipboard=unnamed " Use system clipboard
 set scrolloff=1 " Keep at least 1 line of context above and below the cursor
 set wildmenu " Completion style in command mode
-" }}}
+"-----------------------------------------------------------------------------+
 
 set background=dark
 colorscheme base16-tomorrow
@@ -119,7 +123,9 @@ set laststatus=2 " Status line
 " Take me to where I was when last edited a file
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
 
-" Search {{{
+
+" Search
+"=============================================================================+
 set incsearch
 set ignorecase
 set smartcase
@@ -127,9 +133,11 @@ set hlsearch
 " Sane regexp syntax in search mode
 nnoremap / /\v
 vnoremap / /\v
-" }}}
+"-----------------------------------------------------------------------------+
 
-" Formatting {{{
+
+" Formatting
+"=============================================================================+
 set autoindent
 set cindent
 
@@ -143,8 +151,10 @@ set textwidth=80
 set colorcolumn=81
 
 autocmd FileType python set tabstop=4 softtabstop=4 shiftwidth=4
+
 " Use real tabs in makefiles
-autocmd FileType make set nosmarttab noexpandtab softtabstop=0 tabstop=8 shiftwidth=8
+autocmd FileType make
+      \ set nosmarttab noexpandtab softtabstop=0 tabstop=8 shiftwidth=8
 
 let ymapsdev = $YMAPSDEV
 if ymapsdev
@@ -152,11 +162,12 @@ if ymapsdev
         \ set tabstop=4 softtabstop=4 shiftwidth=4 |
         \ set textwidth=78 colorcolumn=79
 endif
-" }}}
+"-----------------------------------------------------------------------------+
 
-"autocmd FileType cpp set keywordprg=cppman
 
-" Key mapping {{{
+" Key mapping
+"=============================================================================+
+" {
 let mapleader = "\<Space>"
 
 " Jump over visual rows in wrapped text, not actual lines
@@ -194,11 +205,14 @@ nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <leader>s ysiw
 nmap <leader>S ysiW
 
-autocmd FileType c,cpp,java,javascript vnoremap <buffer> <leader>f :ClangFormat<CR>
-autocmd FileType c,cpp,java,javascript nnoremap <buffer> <leader>f :normal! v:ClangFormat<CR>
+autocmd FileType c,cpp,java,javascript
+      \ vnoremap <buffer> <leader>f :ClangFormat<CR>
+autocmd FileType c,cpp,java,javascript
+      \ nnoremap <buffer> <leader>f :normal! v:ClangFormat<CR>
 
 nnoremap <leader>j :YcmCompleter GoTo<CR>
 nnoremap <leader>k :YcmCompleter GetType<CR>
+nnoremap <leader>d :YcmCompleter GetDoc<CR>
 
 nnoremap <leader>o <C-o>
 
@@ -212,16 +226,18 @@ nmap <C-h> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
-
 " Close current window
 nmap <C-x> <C-w>q
-" }}}
+" Toogle ZoomWin zoom/restore splits
+nmap <leader>z <C-w>o
+
+map <leader>w :StripWhitespace<CR>
+" }
+"-----------------------------------------------------------------------------+
+
 
 " Strip whitepace in current buffer
-function! StripWhitespace ()
-  exec ':%s/ \+$//gc'
-endfunction
-map <leader>w :call StripWhitespace ()<CR>
+command! StripWhitespace exec ':%s/ \+$//gc'
 
 " Automatically reload vimrc when it's saved
 augroup AutoReloadVimRC
@@ -235,7 +251,9 @@ set tags+=~/tags
 " Do not look for completion in included files as it may be slow
 set complete-=i
 
-command! CTags exec ':!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaSl --extra=+q .'
+command! CTags exec
+      \ ':!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaSl --extra=+q .'
+
 command! SpellToggle exec ':set spell!'
 
 " Resize splits when the window is resized
@@ -251,18 +269,28 @@ set formatoptions="crqj"
 " Add doxygen style comment leader
 autocmd FileType c,cpp,java,javascript set comments^=:///
 
-" CtrlP {{{
+
+
+"-----------------------------------------------------------------------------+
+" PLUGIN SETTINGS
+"-----------------------------------------------------------------------------+
+
+let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
+
+
+" CtrlP
+"=============================================================================+
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_max_height=17
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\v[\/](\.git|genfiles)$',
       \ 'file': '\v[\/]\.(exe|so|dll|obj|lib|pyc|o|d)$',
       \ }
-" }}}
+"-----------------------------------------------------------------------------+
 
-let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
 
-" Vim-clang-format {{{
+" Vim-clang-format
+"=============================================================================+
 let g:clang_format#detect_style_file = 1
 " If no custom style file found, vim-clang-format defaults to Google style. Set
 " LLVM instead.
@@ -273,13 +301,18 @@ let g:clang_format#style_options = {
       \ "IndentWidth": 2,
       \ "AlwaysBreakTemplateDeclarations": "true",
       \ }
-" }}}
+"-----------------------------------------------------------------------------+
 
+
+" Airline
+"=============================================================================+
 let g:airline_powerline_fonts = 1
 let g:airline_theme = "base16"
-" }}}
+"-----------------------------------------------------------------------------+
 
-" Syntastic {{{
+
+" Syntastic
+" ============================================================================+
 let g:syntastic_cpp_compiler_options = "-std=c++0x"
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -288,17 +321,22 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_auto_refresh_includes = 1
 let g:syntastic_cpp_include_dirs = [ "/usr/local/include" ]
-" }}}
+" ----------------------------------------------------------------------------+
 
-" YouCompleteMe {{{
+
+" YouCompleteMe
+" =============================================================================
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_collect_identifiers_from_tags_files = 1
-" }}}
+" -----------------------------------------------------------------------------
 
-" Python-syntax {{{
+
+" Python-syntax
+" =============================================================================
 let python_highlight_all=1
 let python_version_2=1
-" }}}
+" -----------------------------------------------------------------------------
+
 
 if filereadable(expand("~/.vimrc.local"))
   so ~/.vimrc.local
