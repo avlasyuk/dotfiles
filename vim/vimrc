@@ -6,7 +6,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'chriskempson/base16-vim'
 Plugin 'chriskempson/vim-tomorrow-theme'
-Plugin 'ervandew/supertab'
+"Plugin 'ervandew/supertab'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'hdima/python-syntax' " python.vim replacement
 Plugin 'scrooloose/syntastic'
@@ -20,151 +20,51 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'tpope/vim-git'
-Plugin 'tpope/vim-sleuth' " Guesses indentation settings from a buffer
+Plugin 'tmhedberg/matchit'
 
 "Plugin 'a.vim'
 "Plugin 'tpope/vim-dispatch'
 "Plugin 'tpope/vim-fugitive'
-"Plugin 'tpope/vim-surround'
-"Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+"Plugin 'tpope/vim-sleuth' " Guesses indentation settings from a buffer
 call vundle#end()
 filetype plugin indent on " Required by Vundle
 " }}}
 
+" Modern defaults {{{
 set backspace=indent,eol,start
-
 " Turns off all error bells, visual or otherwise
 " from https://github.com/Valloric/dotfiles/blob/master/vim/vimrc.vim
 set noerrorbells visualbell t_vb=
-
 syntax on
 set number " Line numbers
-
-set encoding=utf-8
-if has('win32')
-  language messages en_US
-  if has("gui_win32") || has("gui_win32s")
-    set langmenu=en_US
-    let $LANG = 'en_US'
-    source $VIMRUNTIME/delmenu.vim
-    source $VIMRUNTIME/menu.vim
-  endif
-endif
-
-if has('mouse')
-  set mouse=a " Enable mouse support
-endif
-
 set history=500
 set undolevels=500
 set hidden " Hide buffers instead of closing them
 set clipboard=unnamed " Use system clipboard
-
-" NOTE: Shall think about better backup strategy
-set nobackup
-set noswapfile
-
-set showcmd
-set cursorline " Highlight current line
-
-set ls=2 " Status line
-
-" Take me to where I was when last edited a file
-au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
-
-" Search {{{
-set incsearch
-set ignorecase
-set smartcase
-set hlsearch
+set scrolloff=1 " Keep at least 1 line of context above and below the cursor
 " }}}
 
-let ymapsdev = $YMAPSDEV
+set background=dark
+colorscheme base16-tomorrow
 
-" Indentation {{{
-set smarttab
-set expandtab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-
-autocmd FileType python
-      \ set tabstop=4 |
-      \ set softtabstop=4 |
-      \ set shiftwidth=4
-
-set textwidth=80
-set colorcolumn=81
-
-if ymapsdev
-  autocmd FileType cpp
-        \ set tabstop=4 |
-        \ set softtabstop=4 |
-        \ set shiftwidth=4 |
-        \ set textwidth=78 |
-        \ set colorcolumn=79
+if has("mouse")
+  set mouse=a " Enable mouse support
 endif
-" }}}
 
-autocmd FileType cpp set keywordprg=cppman
-
-let python_highlight_all=1
-let python_version_2=1
-
-" Sane regexp syntax in search mode
-nnoremap / /\v
-vnoremap / /\v
-
-let mapleader = "\<Space>"
-
-" Whitespace highlighting
-set listchars=tab:▸\ ,trail:·
-set list " Turn on
-
-" Clear highlighted search results
-nnoremap <silent> <leader><Space> :nohls<CR>
-
-set splitbelow " Put horizontal split window below a current one
-set splitright " Put vertical split to the right
-
-set previewheight=9 " Restrict preview window height (default=12)
-
-" Jump over visual rows in wrapped text, not actual lines
-nnoremap j gj
-nnoremap k gk
-
-" More convenient way to return to normal mode from insert mode
-inoremap jj <Esc>
-
-" Delete to the end of line
-nmap D d$
-" Copy to the end of line
-nmap Y y$
-
-" Use <tab> to jump to matching bracket
-nnoremap <Tab> %
-vnoremap <Tab> %
-
-" Emacs
-inoremap <C-a> <Esc>I
-inoremap <C-e> <Esc>A
-
-" Edit vimrc
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-" automatically reload vimrc when it's saved
-augroup AutoReloadVimRC
-  au!
-  au BufWritePost $MYVIMRC so $MYVIMRC
-augroup END
-
-" Surround word with following symbol
-nmap <leader>s ysiw
-
-vnoremap <leader>f :ClangFormat<CR>
-nnoremap <leader>f :normal! v:ClangFormat<CR>
-
-" Turns of the Alt key bindings to the gui menu
-set winaltkeys=no
+set encoding=utf-8
+if has("win32")
+  language messages en_US
+  if has("gui_win32") || has("gui_win32s")
+    set langmenu=en_US
+    let $LANG="en_US"
+    source $VIMRUNTIME/delmenu.vim
+    source $VIMRUNTIME/menu.vim
+    " Turns of the Alt key bindings to the gui menu
+    set winaltkeys=no
+  endif
+endif
 
 if has("gui_running")
   " Hide the mouse when typing text
@@ -188,40 +88,140 @@ if $TERM_PROGRAM =~ "iTerm"
   let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 endif
 
-set background=dark
-colorscheme base16-tomorrow
-
 " No ESC lag
 set timeoutlen=1000 ttimeoutlen=0
 
-" Strip whitepace in file
-function! StripWhitespace ()
-  exec ':%s/ \+$//gc'
-endfunction
-map <leader>w :call StripWhitespace ()<CR>
+" Whitespace highlighting
+set listchars=tab:▸\ ,trail:·
+set list " Turn on
 
-set tags+=./tags;/
-set tags+=~/tags
+set splitbelow " Put horizontal split window below a current one
+set splitright " Put vertical split to the right
 
-nmap <leader>tt :TagbarToggle<CR>
+set previewheight=9 " Restrict preview window height (default=12)
 
-" Do not look for completion in included files as it may be slow
-set complete-=i
+" NOTE: Shall think about better backup strategy
+set nobackup
+set noswapfile
 
-command! CTags exec ':!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaSl --extra=+q .'
+set showcmd
+set cursorline " Highlight current line
 
-command! SpellToggle exec ':set spell!'
+set laststatus=2 " Status line
+
+" Take me to where I was when last edited a file
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+
+" Search {{{
+set incsearch
+set ignorecase
+set smartcase
+set hlsearch
+" Sane regexp syntax in search mode
+nnoremap / /\v
+vnoremap / /\v
+" }}}
+
+" Formatting {{{
+set smarttab
+set expandtab
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+
+set textwidth=80
+set colorcolumn=81
+
+autocmd FileType python set tabstop=4 softtabstop=4 shiftwidth=4
+" Use real tabs in makefiles
+autocmd FileType make set nosmarttab noexpandtab softtabstop=0 tabstop=8 shiftwidth=8
+
+let ymapsdev = $YMAPSDEV
+if ymapsdev
+  autocmd FileType cpp
+        \ set tabstop=4 softtabstop=4 shiftwidth=4 |
+        \ set textwidth=78 colorcolumn=79
+endif
+" }}}
+
+"autocmd FileType cpp set keywordprg=cppman
+
+" Key mapping {{{
+let mapleader = "\<Space>"
+
+" Jump over visual rows in wrapped text, not actual lines
+nnoremap j gj
+nnoremap k gk
+
+" More convenient way to return to normal mode from insert mode
+inoremap jj <Esc>
+
+" Delete to the end of line
+nmap D d$
+" Copy to the end of line
+nmap Y y$
+
+" Use <tab> to jump to matching bracket
+nnoremap <Tab> %
+vnoremap <Tab> %
+
+" Emacs
+inoremap <C-a> <Esc>I
+inoremap <C-e> <Esc>A
+
+" Clear highlighted search results
+nnoremap <silent> <leader><Space> :nohls<CR>
+
+" Edit vimrc
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+
+" Surround word with following symbol
+nmap <leader>s ysiw
+nmap <leader>S ysiW
+
+autocmd FileType c,cpp,java,javascript vnoremap <buffer> <leader>f :ClangFormat<CR>
+autocmd FileType c,cpp,java,javascript nnoremap <buffer> <leader>f :normal! v:ClangFormat<CR>
+
+nnoremap <leader>j :YcmCompleter GoTo<CR>
+nnoremap <leader>k :YcmCompleter GetType<CR>
+
+nnoremap <leader>o <C-o>
 
 nmap <leader>n :bnext<CR>
 nmap <leader>p :bprevious<CR>
+
+nmap <leader>tt :TagbarToggle<CR>
 
 " Faster windows navigation
 nmap <C-h> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
+
 " Close current window
 nmap <C-x> <C-w>q
+" }}}
+
+" Strip whitepace in current buffer
+function! StripWhitespace ()
+  exec ':%s/ \+$//gc'
+endfunction
+map <leader>w :call StripWhitespace ()<CR>
+
+" Automatically reload vimrc when it's saved
+augroup AutoReloadVimRC
+  au!
+  au BufWritePost $MYVIMRC so $MYVIMRC
+augroup END
+
+set tags+=./tags;/
+set tags+=~/tags
+
+" Do not look for completion in included files as it may be slow
+set complete-=i
+
+command! CTags exec ':!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaSl --extra=+q .'
+command! SpellToggle exec ':set spell!'
 
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
@@ -236,46 +236,54 @@ set formatoptions="crqj"
 " Add doxygen style comment leader
 autocmd FileType c,cpp,java,javascript set comments^=:///
 
-" CtrlP
+" CtrlP {{{
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_max_height=17
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\v[\/](\.git|genfiles)$',
       \ 'file': '\v[\/]\.(exe|so|dll|obj|lib|pyc|o|d)$',
       \ }
+" }}}
 
 let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
 
+" Vim-clang-format {{{
 let g:clang_format#detect_style_file = 1
 " If no custom style file found, vim-clang-format defaults to Google style. Set
 " LLVM instead.
-let g:clang_format#code_style = 'llvm'
+let g:clang_format#code_style = "llvm"
 " vim-clang-format will pass shiftwidth value as IndentWidth if it is not set
 " explicitly. Make the value consistent with LLVM style.
 let g:clang_format#style_options = {
-      \ 'IndentWidth': 2,
-      \ 'AlwaysBreakTemplateDeclarations': 'true',
+      \ "IndentWidth": 2,
+      \ "AlwaysBreakTemplateDeclarations": "true",
       \ }
-
+" }}}
 
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'base16'
+let g:airline_theme = "base16"
+" }}}
 
-let g:syntastic_cpp_compiler_options = '-std=c++0x'
+" Syntastic {{{
+let g:syntastic_cpp_compiler_options = "-std=c++0x"
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 "let g:syntastic_check_on_open = 0
 "let g:syntastic_check_on_wq = 0
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_auto_refresh_includes = 1
-let g:syntastic_cpp_include_dirs = [ '/usr/local/include' ]
+let g:syntastic_cpp_include_dirs = [ "/usr/local/include" ]
+" }}}
 
+" YouCompleteMe {{{
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_collect_identifiers_from_tags_files = 1
+" }}}
 
-nnoremap <leader>j :YcmCompleter GoTo<CR>
-nnoremap <leader>k :YcmCompleter GetType<CR>
-nnoremap <leader>o <C-o>
+" Python-syntax {{{
+let python_highlight_all=1
+let python_version_2=1
+" }}}
 
 if filereadable(expand("~/.vimrc.local"))
   so ~/.vimrc.local
