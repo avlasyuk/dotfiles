@@ -1,6 +1,6 @@
 set nocompatible
 " Plugins {{{
-filetype off " required by Vundle
+filetype off " Required by Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
@@ -8,7 +8,7 @@ Plugin 'chriskempson/base16-vim'
 Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'ervandew/supertab'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'python.vim'
+Plugin 'hdima/python-syntax' " python.vim replacement
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'rhysd/vim-clang-format'
@@ -20,6 +20,7 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'tpope/vim-git'
+Plugin 'tpope/vim-sleuth' " Guesses indentation settings from a buffer
 
 "Plugin 'a.vim'
 "Plugin 'tpope/vim-dispatch'
@@ -27,7 +28,7 @@ Plugin 'tpope/vim-git'
 "Plugin 'tpope/vim-surround'
 "Plugin 'tpope/vim-repeat'
 call vundle#end()
-filetype plugin indent on " required by Vundle
+filetype plugin indent on " Required by Vundle
 " }}}
 
 set backspace=indent,eol,start
@@ -107,8 +108,8 @@ endif
 
 autocmd FileType cpp set keywordprg=cppman
 
-autocmd FileType python setlocal completeopt-=preview
 let python_highlight_all=1
+let python_version_2=1
 
 " Sane regexp syntax in search mode
 nnoremap / /\v
@@ -118,10 +119,15 @@ let mapleader = "\<Space>"
 
 " Whitespace highlighting
 set listchars=tab:▸\ ,trail:·
-set list
+set list " Turn on
 
-" Clear highlighted search results on Return pressed in command mode
-nnoremap <silent> <CR> :nohls<CR>
+" Clear highlighted search results
+nnoremap <silent> <leader><Space> :nohls<CR>
+
+set splitbelow " Put horizontal split window below a current one
+set splitright " Put vertical split to the right
+
+set previewheight=9 " Restrict preview window height (default=12)
 
 " Jump over visual rows in wrapped text, not actual lines
 nnoremap j gj
@@ -143,9 +149,8 @@ vnoremap <Tab> %
 inoremap <C-a> <Esc>I
 inoremap <C-e> <Esc>A
 
-" Edit and reload vimrc
+" Edit vimrc
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " automatically reload vimrc when it's saved
 augroup AutoReloadVimRC
   au!
@@ -198,13 +203,25 @@ map <leader>w :call StripWhitespace ()<CR>
 set tags+=./tags;/
 set tags+=~/tags
 
+nmap <leader>tt :TagbarToggle<CR>
+
 " Do not look for completion in included files as it may be slow
 set complete-=i
 
 command! CTags exec ':!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaSl --extra=+q .'
 
-map <leader>n :bnext<CR>
-map <leader>p :bprevious<CR>
+command! SpellToggle exec ':set spell!'
+
+nmap <leader>n :bnext<CR>
+nmap <leader>p :bprevious<CR>
+
+" Faster windows navigation
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+" Close current window
+nmap <C-x> <C-w>q
 
 " Resize splits when the window is resized
 au VimResized * exe "normal! \<c-w>="
@@ -229,7 +246,17 @@ let g:ctrlp_custom_ignore = {
 
 let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
 
-let g:clang_format#detect_style_file=1
+let g:clang_format#detect_style_file = 1
+" If no custom style file found, vim-clang-format defaults to Google style. Set
+" LLVM instead.
+let g:clang_format#code_style = 'llvm'
+" vim-clang-format will pass shiftwidth value as IndentWidth if it is not set
+" explicitly. Make the value consistent with LLVM style.
+let g:clang_format#style_options = {
+      \ 'IndentWidth': 2,
+      \ 'AlwaysBreakTemplateDeclarations': 'true',
+      \ }
+
 
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'base16'
