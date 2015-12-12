@@ -31,8 +31,11 @@ filetype plugin indent on " required by Vundle
 " }}}
 
 set backspace=indent,eol,start
-set visualbell
-set noerrorbells
+
+" Turns off all error bells, visual or otherwise
+" from https://github.com/Valloric/dotfiles/blob/master/vim/vimrc.vim
+set noerrorbells visualbell t_vb=
+
 syntax on
 set number " Line numbers
 
@@ -133,8 +136,8 @@ nmap D d$
 nmap Y y$
 
 " Use <tab> to jump to matching bracket
-nnoremap <tab> %
-vnoremap <tab> %
+nnoremap <Tab> %
+vnoremap <Tab> %
 
 " Emacs
 inoremap <C-a> <Esc>I
@@ -155,8 +158,8 @@ nmap <leader>s ysiw
 vnoremap <leader>f :ClangFormat<CR>
 nnoremap <leader>f :normal! v:ClangFormat<CR>
 
-" Change working directory automatically
-"set autochdir
+" Turns of the Alt key bindings to the gui menu
+set winaltkeys=no
 
 if has("gui_running")
   " Hide the mouse when typing text
@@ -195,6 +198,7 @@ map <leader>w :call StripWhitespace ()<CR>
 set tags+=./tags;/
 set tags+=~/tags
 
+" Do not look for completion in included files as it may be slow
 set complete-=i
 
 command! CTags exec ':!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaSl --extra=+q .'
