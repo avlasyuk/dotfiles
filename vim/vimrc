@@ -13,17 +13,26 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'hdima/python-syntax' " python.vim replacement
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
-Plugin 'rhysd/vim-clang-format'
+
+"Plugin 'rhysd/vim-clang-format'
+Plugin 'avlasyuk/vim-clang-format'
+
 Plugin 'bling/vim-airline'
 Plugin 'majutsushi/tagbar'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'mileszs/ack.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'Valloric/YouCompleteMe'
+
+"Plugin 'Valloric/YouCompleteMe'
+Plugin 'avlasyuk/YouCompleteMe'
+
 Plugin 'tpope/vim-git'
 Plugin 'tmhedberg/matchit'
 "Plugin 'Raimondi/delimitMate'
+
 "Plugin 'a.vim'
+Plugin 'avlasyuk/a.vim'
+
 "Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
@@ -230,7 +239,9 @@ nmap <C-x> <C-w>q
 " Toogle ZoomWin zoom/restore splits
 nmap <leader>z <C-w>o
 
-map <leader>w :StripWhitespace<CR>
+nmap <leader>w :StripWhitespace<CR>
+
+nnoremap <leader>m :CtrlPMRUFiles<CR>
 " }
 "-----------------------------------------------------------------------------+
 
@@ -276,6 +287,8 @@ autocmd FileType c,cpp,java,javascript set comments^=:///
 
 let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
 
+" Custom option for avlasyuk/a.vim fork
+let g:avimNoInsertModeMappings = 1
 
 " CtrlP
 "=============================================================================+
