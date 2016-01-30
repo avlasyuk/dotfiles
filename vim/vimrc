@@ -41,7 +41,6 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'regedarek/ZoomWin'
-"Plugin 'tpope/vim-sleuth' " Guesses indentation settings from a buffer
 call vundle#end()
 filetype plugin indent on " Required by Vundle
 "-----------------------------------------------------------------------------+
@@ -228,6 +227,7 @@ nmap <leader>n :bnext<CR>
 nmap <leader>p :bprevious<CR>
 
 nmap <leader>tt :TagbarToggle<CR>
+nmap <leader>tn :NERDTreeToggle<CR>
 
 " Faster windows navigation
 nmap <C-h> <C-w>h
@@ -242,6 +242,9 @@ nmap <leader>z <C-w>o
 nmap <leader>w :StripWhitespace<CR>
 
 nnoremap <leader>m :CtrlPMRUFiles<CR>
+
+autocmd FileType c,cpp,python nnoremap <buffer> <F7> :YcmDiags<CR>
+
 " }
 "-----------------------------------------------------------------------------+
 
@@ -303,16 +306,7 @@ let g:ctrlp_custom_ignore = {
 
 " Vim-clang-format
 "=============================================================================+
-let g:clang_format#detect_style_file = 1
-" If no custom style file found, vim-clang-format defaults to Google style. Set
-" LLVM instead.
-let g:clang_format#code_style = "llvm"
-" vim-clang-format will pass shiftwidth value as IndentWidth if it is not set
-" explicitly. Make the value consistent with LLVM style.
-let g:clang_format#style_options = {
-      \ "IndentWidth": 2,
-      \ "AlwaysBreakTemplateDeclarations": "true",
-      \ }
+let g:clang_format#code_style = "chromium"
 "-----------------------------------------------------------------------------+
 
 
