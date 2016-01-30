@@ -169,6 +169,9 @@ if ymapsdev
         \ set tabstop=4 softtabstop=4 shiftwidth=4 |
         \ set textwidth=78 colorcolumn=79
 endif
+
+command! -nargs=1 SetIndentSize set tabstop=<args> softtabstop=<args>
+      \ shiftwidth=<args>
 "-----------------------------------------------------------------------------+
 
 
