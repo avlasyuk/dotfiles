@@ -293,8 +293,16 @@ autocmd FileType c,cpp,java,javascript set comments^=:///
 
 let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
 
+
+" A.vim
+"=============================================================================+
 " Custom option for avlasyuk/a.vim fork
 let g:avimNoInsertModeMappings = 1
+
+let g:alternateSearchPath =
+      \ 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc,sfr:include'
+"-----------------------------------------------------------------------------+
+
 
 " CtrlP
 "=============================================================================+
@@ -309,43 +317,43 @@ let g:ctrlp_custom_ignore = {
 
 " Vim-clang-format
 "=============================================================================+
-let g:clang_format#code_style = "chromium"
+let g:clang_format#code_style = 'chromium'
 "-----------------------------------------------------------------------------+
 
 
 " Airline
 "=============================================================================+
 let g:airline_powerline_fonts = 1
-let g:airline_theme = "base16"
+let g:airline_theme = 'base16'
 "-----------------------------------------------------------------------------+
 
 
 " Syntastic
-" ============================================================================+
-let g:syntastic_cpp_compiler_options = "-std=c++0x"
+"=============================================================================+
+let g:syntastic_cpp_compiler_options = '-std=c++0x'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_auto_refresh_includes = 1
-let g:syntastic_cpp_include_dirs = [ "/usr/local/include" ]
-let g:syntastic_python_checkers = ["pylint"]
-" ----------------------------------------------------------------------------+
+let g:syntastic_cpp_include_dirs = [ '/usr/local/include' ]
+let g:syntastic_python_checkers = ['pylint']
+"-----------------------------------------------------------------------------+
 
 
 " YouCompleteMe
-" =============================================================================
+"==============================================================================
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_collect_identifiers_from_tags_files = 1
-" -----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 
 
 " Python-syntax
-" =============================================================================
+"==============================================================================
 let python_highlight_all=1
 let python_version_2=1
-" -----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 
 
 if filereadable(expand("~/.vimrc.local"))
