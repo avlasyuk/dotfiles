@@ -51,7 +51,10 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'regedarek/ZoomWin'
-Plugin 'c.vim'
+Plugin 'lyuts/vim-rtags'
+"Plugin 'Shougo/unite.vim'
+Plugin 'Yggdroot/indentLine'
+
 call vundle#end()
 filetype plugin indent on " Required by Vundle
 "-----------------------------------------------------------------------------+
@@ -364,6 +367,11 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_collect_identifiers_from_tags_files = 1
 "------------------------------------------------------------------------------
 
+" UltiSnips
+"==============================================================================
+let g:UltiSnipsExpandTrigger= "<c-s>"
+"------------------------------------------------------------------------------
+
 
 " Python-syntax
 "==============================================================================
@@ -377,6 +385,12 @@ let g:pymode_rope_completion = 0
 let g:pymode_folding = 0
 "------------------------------------------------------------------------------
 
+"let g:indentLine_enabled = 0
+
+" Rtags
+"==============================================================================
+let g:rtagsUseLocationList = 0
+"------------------------------------------------------------------------------
 
 if filereadable(expand("~/.vimrc.local"))
   so ~/.vimrc.local
