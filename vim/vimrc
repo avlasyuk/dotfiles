@@ -272,7 +272,7 @@ autocmd FileType c,cpp,java,javascript
 
 autocmd FileType python
       \ vnoremap <buffer> <leader>f :YAPF<CR>
-autocmd FileType c,cpp,java,javascript
+autocmd FileType python
       \ nnoremap <buffer> <leader>f :normal! v:YAPF<CR>
 
 nnoremap <leader>j :YcmCompleter GoTo<CR>
