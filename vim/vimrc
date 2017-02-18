@@ -43,7 +43,7 @@ Plugin 'avlasyuk/YouCompleteMe'
 
 Plugin 'tpope/vim-git'
 Plugin 'tmhedberg/matchit'
-"Plugin 'Raimondi/delimitMate'
+Plugin 'Raimondi/delimitMate'
 
 "Plugin 'a.vim'
 Plugin 'avlasyuk/a.vim'
@@ -61,8 +61,10 @@ Plugin 'lyuts/vim-rtags'
 Plugin 'Yggdroot/indentLine'
 Plugin 'jnurmine/Zenburn'
 Plugin 'morhetz/gruvbox'
-
+Plugin 'elzr/vim-json'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'dyng/ctrlsf.vim'
+Plugin 'itchyny/vim-cursorword'
 
 call vundle#end()
 filetype plugin indent on " Required by Vundle
@@ -83,9 +85,14 @@ set clipboard=unnamed " Use system clipboard
 set scrolloff=1 " Keep at least 1 line of context above and below the cursor
 set wildmenu " Completion style in command mode
 "-----------------------------------------------------------------------------+
-set background=light
-let g:seoul256_background=254
-colorscheme seoul256-light
+
+if $BACKGROUND == "light"
+  set background=light
+  let g:seoul256_background=255
+else
+  set background=dark
+endif
+colorscheme seoul256
 
 if has("mouse")
   set mouse=a " Enable mouse support
@@ -197,6 +204,26 @@ command! -nargs=1 SetIndentSize set tabstop=<args> softtabstop=<args>
       \ shiftwidth=<args>
 "-----------------------------------------------------------------------------+
 
+" Format python code with YAPF
+"=============================================================================+
+" Copied from https://github.com/google/yapf/blob/master/plugins/yapf.vim
+function! YAPFfmt() range
+  " Determine range to format.
+  let l:line_ranges = a:firstline . '-' . a:lastline
+  let l:cmd = 'yapf --lines=' . l:line_ranges
+
+  " Call YAPF with the current buffer
+  let l:formatted_text = system(l:cmd, join(getline(1, '$'), "\n") . "\n")
+
+  " Update the buffer.
+  execute '1,' . string(line('$')) . 'delete'
+  call setline(1, split(l:formatted_text, "\n"))
+
+  " Reset cursor to first line of the formatted range.
+  call cursor(a:firstline, 1)
+endfunction
+
+command! -range=% YAPF <line1>,<line2>call YAPFfmt()
 
 " Key mapping
 "=============================================================================+
@@ -242,6 +269,11 @@ autocmd FileType c,cpp,java,javascript
       \ vnoremap <buffer> <leader>f :ClangFormat<CR>
 autocmd FileType c,cpp,java,javascript
       \ nnoremap <buffer> <leader>f :normal! v:ClangFormat<CR>
+
+autocmd FileType python
+      \ vnoremap <buffer> <leader>f :YAPF<CR>
+autocmd FileType c,cpp,java,javascript
+      \ nnoremap <buffer> <leader>f :normal! v:YAPF<CR>
 
 nnoremap <leader>j :YcmCompleter GoTo<CR>
 nnoremap <leader>k :YcmCompleter GetType<CR>
@@ -321,6 +353,10 @@ autocmd FileType c,cpp,java,javascript set comments^=:///
 
 let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
 
+" Works with Input font
+let g:NERDTreeDirArrowExpandable = '►'
+let g:NERDTreeDirArrowCollapsible = '▼'
+let g:tagbar_iconchars = ['►', '▼']
 
 " A.vim
 "=============================================================================+
@@ -405,6 +441,9 @@ let g:indentLine_enabled = 0
 "==============================================================================
 let g:rtagsUseLocationList = 0
 "------------------------------------------------------------------------------
+
+let g:delimitMate_expand_cr = 1
+let g:delimitMate_expand_space = 1
 
 if filereadable(expand("~/.vimrc.local"))
   so ~/.vimrc.local
