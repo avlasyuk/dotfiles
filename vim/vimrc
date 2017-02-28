@@ -65,6 +65,7 @@ Plugin 'elzr/vim-json'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'dyng/ctrlsf.vim'
 Plugin 'itchyny/vim-cursorword'
+Plugin 'scrooloose/nerdcommenter'
 
 call vundle#end()
 filetype plugin indent on " Required by Vundle
