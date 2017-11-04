@@ -88,7 +88,7 @@ if has("gui_running")
   set guioptions-=T
 
   if has("gui_mac") || has("gui_macvim")
-    set gfn=Menlo:h13
+    set guifont=Source_Code_Pro:h11
     set fuoptions=background:Normal
   endif
 
@@ -322,7 +322,7 @@ let g:ctrlp_custom_ignore = {
 
 " Vim-clang-format
 "=============================================================================+
-let g:clang_format#code_style = 'chromium'
+let g:clang_format#code_style = 'webkit'
 "-----------------------------------------------------------------------------+
 
 
@@ -359,7 +359,6 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 let python_highlight_all=1
 let python_version_2=1
 "------------------------------------------------------------------------------
-
 
 if filereadable(expand("~/.vimrc.local"))
   so ~/.vimrc.local
