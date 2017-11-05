@@ -141,7 +141,7 @@ set timeoutlen=1000 ttimeoutlen=0
 set updatetime=500
 
 " Whitespace highlighting
-set listchars=tab:▸\ ,trail:·
+set listchars=tab:→\ ,trail:·
 set list " Turn on
 
 set splitbelow " Put horizontal split window below a current one
@@ -357,7 +357,7 @@ let NERDTreeIgnore = ['\.so$', '\.so\..+$', '\.pyc$', '\.deb$']
 " Works with Input font
 let g:NERDTreeDirArrowExpandable = '►'
 let g:NERDTreeDirArrowCollapsible = '▼'
-let g:tagbar_iconchars = ['►', '▼']
+"let g:tagbar_iconchars = ['►', '▼']
 
 " A.vim
 "=============================================================================+
