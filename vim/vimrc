@@ -38,12 +38,12 @@ Plugin 'junegunn/vim-easy-align'
 Plugin 'mileszs/ack.vim'
 Plugin 'avlasyuk/vim-cpp-enhanced-highlight'
 
-"Plugin 'Valloric/YouCompleteMe'
-Plugin 'avlasyuk/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
+"Plugin 'avlasyuk/YOuCompleteMe'
 
 Plugin 'tpope/vim-git'
 Plugin 'tmhedberg/matchit'
-Plugin 'Raimondi/delimitMate'
+"Plugin 'Raimondi/delimitMate'
 
 "Plugin 'a.vim'
 Plugin 'avlasyuk/a.vim'
@@ -365,7 +365,7 @@ let g:NERDTreeDirArrowCollapsible = '▼'
 let g:avimNoInsertModeMappings = 1
 
 let g:alternateSearchPath =
-      \ 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc,sfr:include'
+      \ 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc,sfr:include,sfr:../,sfr:../impl'
 "-----------------------------------------------------------------------------+
 
 
