@@ -31,6 +31,7 @@ Plug 'itchyny/vim-cursorword'
 Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
+Plug 'dyng/ctrlsf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tmhedberg/matchit'
 Plug 'tpope/vim-dispatch'
@@ -40,7 +41,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clang-completer' }
+
+"Plug 'w0rp/ale'
+"Plug 'chrisbra/csv.vim'
 
 call plug#end()
 "-----------------------------------------------------------------------------+
@@ -230,6 +234,7 @@ set textwidth=80
 set colorcolumn=81
 
 autocmd FileType python set tabstop=4 softtabstop=4 shiftwidth=4
+autocmd FileType cpp set tabstop=4 softtabstop=4 shiftwidth=4
 
 " Use real tabs in makefiles
 autocmd FileType make
@@ -431,6 +436,7 @@ let g:clang_format#code_style = 'webkit'
 "=============================================================================+
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'sol'
+let g:airline#extensions#ale#enabled = 1
 "-----------------------------------------------------------------------------+
 
 
@@ -486,6 +492,11 @@ let g:rtagsUseLocationList = 0
 
 let g:delimitMate_expand_cr = 1
 let g:delimitMate_expand_space = 1
+
+let g:ackhighlight = 1
+if executable('ya')
+  let g:ackprg = 'ya grep'
+endif
 
 if filereadable(expand("~/.vimrc.local"))
   so ~/.vimrc.local
