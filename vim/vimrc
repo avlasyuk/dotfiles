@@ -17,12 +17,13 @@ call plug#begin('~/.vim/plugged')
 Plug 'avlasyuk/seoul256.vim'
 
 "Plug 'hdima/python-syntax'
-Plug 'avlasyuk/python-syntax'
+Plug 'vim-python/python-syntax'
+"Plug 'avlasyuk/python-syntax'
 
-"Plug 'rhysd/vim-clang-format'
-Plug 'avlasyuk/vim-clang-format'
+Plug 'rhysd/vim-clang-format'
 
-Plug 'avlasyuk/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight'
+"Plug 'avlasyuk/vim-cpp-enhanced-highlight'
 
 Plug 'bling/vim-airline'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -37,11 +38,14 @@ Plug 'tmhedberg/matchit'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'tomasr/molokai'
+Plug 'liuchengxu/space-vim-dark'
+Plug 'arcticicestudio/nord-vim'
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
-Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clang-completer' }
+Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 install.py --clangd-completer' }
 
 "Plug 'w0rp/ale'
 "Plug 'chrisbra/csv.vim'
@@ -132,13 +136,20 @@ set scrolloff=1 " Keep at least 1 line of context above and below the cursor
 set wildmenu " Completion style in command mode
 "-----------------------------------------------------------------------------+
 
-if $BACKGROUND == "light"
-  set background=light
-  let g:seoul256_background=255
-else
-  set background=dark
+"if $BACKGROUND == "light"
+"  set background=light
+""  let g:seoul256_background=255
+"else
+"  set background=dark
+"endif
+
+if (has("termguicolors"))
+  set termguicolors
 endif
-colorscheme seoul256
+set background=dark
+"hi LineNr ctermbg=NONE guibg=NONE
+"colorscheme seoul256
+colorscheme space-vim-dark
 
 if has("mouse")
   set mouse=a " Enable mouse support
@@ -183,7 +194,9 @@ endif
 set timeoutlen=1000 ttimeoutlen=0
 
 " Receive changes from vim-gitgutter more often (time in ms)
-set updatetime=500
+"set updatetime=500
+" YCM hover feature hangs vim. Make it popup only when idle.
+set updatetime=2500
 
 " Whitespace highlighting
 set listchars=tab:→\ ,trail:·
@@ -323,7 +336,8 @@ autocmd FileType python
       \ nnoremap <buffer> <leader>f :normal! v:YAPF<CR>
 
 nnoremap <leader>j :YcmCompleter GoTo<CR>
-nnoremap <leader>k :YcmCompleter GetType<CR>
+"nnoremap <leader>k :YcmCompleter GetType<CR>
+nmap <leader>k <plug>(YCMHover)
 nnoremap <leader>d :YcmCompleter GetDoc<CR>
 
 nnoremap <leader>o <C-o>
@@ -457,12 +471,19 @@ let g:syntastic_python_checkers = ['pyflakes']
 " YouCompleteMe
 "==============================================================================
 let g:ycm_confirm_extra_conf = 0
-let g:ycm_collect_identifiers_from_tags_files = 1
+"let g:ycm_auto_hover = ''
+"let g:ycm_collect_identifiers_from_tags_files = 1
+" Let clangd fully control code completion
+"let g:ycm_clangd_uses_ycmd_caching = 1
+"let g:ycm_error_symbol = '✗'
+"let g:ycm_warning_symbol = '✗'
+" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+"let g:ycm_clangd_binary_path = exepath("clangd")
 "------------------------------------------------------------------------------
 
 " Cpp-enhanced-highlight
 "==============================================================================
-let g:cpp_class_scope_highlight = 1
+"let g:cpp_class_scope_highlight = 1
 "------------------------------------------------------------------------------
 
 " UltiSnips
@@ -473,8 +494,8 @@ let g:UltiSnipsExpandTrigger= "<c-s>"
 
 " Python-syntax
 "==============================================================================
-let python_highlight_all=1
-let python_version_2=1
+let g:python_highlight_all=1
+let g:python_version_2=1
 "------------------------------------------------------------------------------
 
 " Pyton-mode
@@ -485,17 +506,15 @@ let g:pymode_folding = 0
 
 let g:indentLine_enabled = 0
 
-" Rtags
-"==============================================================================
-let g:rtagsUseLocationList = 0
-"------------------------------------------------------------------------------
-
 let g:delimitMate_expand_cr = 1
 let g:delimitMate_expand_space = 1
 
 let g:ackhighlight = 1
-if executable('ya')
-  let g:ackprg = 'ya grep'
+"if executable('ya')
+"  let g:ackprg = 'ya grep'
+"endif
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
 endif
 
 if filereadable(expand("~/.vimrc.local"))
