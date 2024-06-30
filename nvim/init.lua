@@ -3,6 +3,8 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+vim.opt.termguicolors = true
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -585,7 +587,10 @@ local plugins = {
   {
     'nvim-tree/nvim-tree.lua',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    opts = {},
+    config = function()
+      require("nvim-tree").setup()
+      vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { silent = true, desc = 'Toggle file tree' })
+    end
   },
 
   -- [[ Colorscheme ]]
@@ -646,7 +651,10 @@ local plugins = {
   {
     'folke/trouble.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    opts = {},
+    config = function()
+      require('trouble').setup()
+      vim.keymap.set('n', '<leader>te', ':Trouble diagnostics toggle<CR>', { silent = true, desc = 'Toggle Trouble' })
+    end
   },
 }
 
@@ -720,9 +728,6 @@ vim.keymap.set('n', 'gl', '$', { silent = true, desc = 'Go to line end' })
 vim.keymap.set('n', 'gn', ':bn<CR>', { desc = 'Go to next buffer' })
 vim.keymap.set('n', 'gp', ':bp<CR>', { desc = 'Go to previous buffer' })
 vim.keymap.set('n', 'mm', '%', { silent = true, desc = 'Go to matching bracket' })
-
-vim.keymap.set('n', '<leader>te', ':Trouble diagnostics toggle<CR>', { desc = 'Toggle Trouble' })
-vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { desc = 'Toggle file tree' })
 
 vim.keymap.set('n', '<leader>y', ':let @+=@<CR>', { silent = true, desc = 'Copy yank buffer to clipboard' })
 vim.keymap.set('v', '<leader>y', '"+y', { silent = true, desc = 'Yank to clipboard' })
