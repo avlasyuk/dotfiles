@@ -682,7 +682,18 @@ else
   }
 end
 
-require('lazy').setup(plugins, {})
+if not vim.g.vscode then
+  require('lazy').setup(plugins, {})
+
+  vim.cmd.colorscheme 'everforest'
+
+  vim.api.nvim_create_augroup('lualine_augroup', { clear = true })
+  vim.api.nvim_create_autocmd('User', {
+    group = 'lualine_augroup',
+    pattern = 'LspProgressStatusUpdated',
+    callback = require('lualine').refresh,
+  })
+end
 
 -- Take me to where I was when last edited a file
 vim.api.nvim_create_autocmd('BufReadPost', {
@@ -696,17 +707,6 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     end
   end,
 })
-
-vim.api.nvim_create_augroup('lualine_augroup', { clear = true })
-vim.api.nvim_create_autocmd('User', {
-  group = 'lualine_augroup',
-  pattern = 'LspProgressStatusUpdated',
-  callback = require('lualine').refresh,
-})
-
-if not vim.g.vscode then
-  vim.cmd.colorscheme 'everforest'
-end
 
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
@@ -724,7 +724,7 @@ vim.keymap.set('n', 'mm', '%', { silent = true, desc = 'Go to matching bracket' 
 vim.keymap.set('n', '<leader>te', ':Trouble diagnostics toggle<CR>', { desc = 'Toggle Trouble' })
 vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { desc = 'Toggle file tree' })
 
-vim.keymap.set('n', '<leader>y', ':let @+=@<CR>', { silent = true, desc = 'Copy to clipboard' })
+vim.keymap.set('n', '<leader>y', ':let @+=@<CR>', { silent = true, desc = 'Copy yank buffer to clipboard' })
 vim.keymap.set('v', '<leader>y', '"+y', { silent = true, desc = 'Yank to clipboard' })
 
 -- vim: ts=2 sts=2 sw=2 et
