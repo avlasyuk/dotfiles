@@ -588,9 +588,9 @@ local plugins = {
     'nvim-tree/nvim-tree.lua',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      require("nvim-tree").setup()
+      require('nvim-tree').setup()
       vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { silent = true, desc = 'Toggle file tree' })
-    end
+    end,
   },
 
   -- [[ Colorscheme ]]
@@ -605,32 +605,41 @@ local plugins = {
 
   {
     'nvim-lualine/lualine.nvim',
-    opts = {
-      options = {
-        component_separators = '',
-        section_separators = '',
-        color = 'StatusLineNC',
-      },
-      sections = {
-        lualine_b = {
-          'diagnostics',
-        },
-        lualine_x = {
-          'require("lsp-progress").progress()',
-          {
-            'filetype',
-            icons_enabled = false,
-          },
-        },
-      },
-      extensions = { 'trouble' },
-    },
     dependencies = {
       {
         'linrongbin16/lsp-progress.nvim',
         opts = {},
       },
     },
+    config = function ()
+      require('lualine').setup({
+        options = {
+          component_separators = '',
+          section_separators = '',
+          color = 'StatusLineNC',
+        },
+        sections = {
+          lualine_b = {
+            'diagnostics',
+          },
+          lualine_x = {
+            'require("lsp-progress").progress()',
+            {
+              'filetype',
+              icons_enabled = false,
+            },
+          },
+        },
+        extensions = { 'trouble' },
+      })
+
+      vim.api.nvim_create_augroup('lualine_augroup', { clear = true })
+      vim.api.nvim_create_autocmd('User', {
+        group = 'lualine_augroup',
+        pattern = 'LspProgressStatusUpdated',
+        callback = require('lualine').refresh,
+      })
+    end
   },
 
   {
@@ -651,10 +660,12 @@ local plugins = {
   {
     'folke/trouble.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('trouble').setup()
-      vim.keymap.set('n', '<leader>te', ':Trouble diagnostics toggle<CR>', { silent = true, desc = 'Toggle Trouble' })
-    end
+    opts = {},
+    keys = {
+      {
+        '<leader>te', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Toggle Trouble'
+      }
+    }
   },
 }
 
@@ -679,28 +690,21 @@ local gitsign_opts = {
 }
 
 if gitsign_arc_dir ~= nil then
-  plugins[#plugins + 1] = {
+  table.insert(plugins, {
     dir = gitsign_arc_dir,
     opts = gitsign_opts,
-  }
+  })
 else
-  plugins[#plugins + 1] = {
+  table.insert(plugins, {
     'lewis6991/gitsigns.nvim',
     opts = gitsign_opts,
-  }
+  })
 end
 
 if not vim.g.vscode then
   require('lazy').setup(plugins, {})
 
   vim.cmd.colorscheme 'everforest'
-
-  vim.api.nvim_create_augroup('lualine_augroup', { clear = true })
-  vim.api.nvim_create_autocmd('User', {
-    group = 'lualine_augroup',
-    pattern = 'LspProgressStatusUpdated',
-    callback = require('lualine').refresh,
-  })
 end
 
 -- Take me to where I was when last edited a file
