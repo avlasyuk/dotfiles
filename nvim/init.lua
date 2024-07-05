@@ -367,6 +367,8 @@ local plugins = {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'isort',
+        'black',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -414,7 +416,7 @@ local plugins = {
         lua = { 'stylua' },
         cpp = { 'clang-format' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
@@ -473,6 +475,10 @@ local plugins = {
         },
         completion = { completeopt = 'menu,menuone,noinsert' },
 
+        performance = {
+          debounce = 200,
+        },
+
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`
         --
@@ -495,8 +501,8 @@ local plugins = {
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
           ['<CR>'] = cmp.mapping.confirm { select = true },
-          ['<Tab>'] = cmp.mapping.select_next_item(),
-          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          --['<Tab>'] = cmp.mapping.select_next_item(),
+          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -611,8 +617,8 @@ local plugins = {
         opts = {},
       },
     },
-    config = function ()
-      require('lualine').setup({
+    config = function()
+      require('lualine').setup {
         options = {
           component_separators = '',
           section_separators = '',
@@ -631,7 +637,7 @@ local plugins = {
           },
         },
         extensions = { 'trouble' },
-      })
+      }
 
       vim.api.nvim_create_augroup('lualine_augroup', { clear = true })
       vim.api.nvim_create_autocmd('User', {
@@ -639,7 +645,7 @@ local plugins = {
         pattern = 'LspProgressStatusUpdated',
         callback = require('lualine').refresh,
       })
-    end
+    end,
   },
 
   {
@@ -663,9 +669,11 @@ local plugins = {
     opts = {},
     keys = {
       {
-        '<leader>te', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Toggle Trouble'
-      }
-    }
+        '<leader>te',
+        '<cmd>Trouble diagnostics toggle<cr>',
+        desc = 'Toggle Trouble',
+      },
+    },
   },
 }
 
