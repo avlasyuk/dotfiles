@@ -10,17 +10,10 @@ vim.g.maplocalleader = ' '
 
 vim.g.have_nerd_font = true
 
---vim.o.background = 'light'
-
 vim.opt.number = true
 vim.opt.relativenumber = true
 
 vim.opt.mouse = 'a'
-
-vim.opt.showmode = false
-
--- Sync clipboard between OS and Neovim.
--- vim.opt.clipboard = 'unnamedplus'
 
 vim.opt.breakindent = true
 
@@ -206,6 +199,33 @@ local plugins = {
     end,
   },
 
+  { -- For noice signature help
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    opts = {
+      cmdline = { enabled = false },
+      messages = { enabled = false },
+      lsp = {
+        progress = { enabled = false },
+        message = { enabled = false },
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+          ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
+        },
+      },
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      'MunifTanjim/nui.nvim',
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      -- "rcarriga/nvim-notify",
+    },
+  },
+
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -313,6 +333,7 @@ local plugins = {
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
+
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
@@ -331,7 +352,10 @@ local plugins = {
           settings = {
             python = {
               analysis = {
-                extraPaths = { '/home/avlasyuk/arc/arcadia/yt/python', '/home/avlasyuk/arc/arcadia' },
+                extraPaths = {
+                  '/home/avlasyuk/arc/arcadia/yt/python',
+                  '/home/avlasyuk/arc/arcadia',
+                },
                 typeCheckingMode = 'basic',
               },
             },
@@ -401,7 +425,7 @@ local plugins = {
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
@@ -460,6 +484,7 @@ local plugins = {
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      -- 'hrsh7th/cmp-nvim-lsp-signature-help',
     },
     config = function()
       -- See `:help cmp`
@@ -473,10 +498,20 @@ local plugins = {
             luasnip.lsp_expand(args.body)
           end,
         },
-        completion = { completeopt = 'menu,menuone,noinsert' },
+
+        completion = {
+          completeopt = 'menu,menuone,noinsert',
+          keyword_length = 2,
+        },
+
+        formatting = {
+          expandable_indicator = false,
+          fields = { 'abbr', 'menu', 'kind' },
+        },
 
         performance = {
           debounce = 200,
+          max_view_entries = 20,
         },
 
         -- For an understanding of why these mappings were
@@ -532,12 +567,18 @@ local plugins = {
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
+          {
+            name = 'nvim_lsp',
+            entry_filter = function(entry)
+              return cmp.lsp.CompletionItemKind.Snippet ~= entry:get_kind()
+            end,
+          },
+          -- { name = 'luasnip' },
           { name = 'path' },
-          --{ name = 'nvim_lsp_signature_help' },
+          -- { name = 'nvim_lsp_signature_help' },
         },
         experimental = { ghost_text = true },
+        matching = { disallow_symbol_nonprefix_matching = true },
       }
     end,
   },
@@ -548,7 +589,18 @@ local plugins = {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'cpp', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'cpp',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'vim',
+        'vimdoc',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -605,7 +657,9 @@ local plugins = {
     priority = 1000,
   },
   'sainnhe/edge',
-  'navarasu/onedark.nvim',
+  -- 'navarasu/onedark.nvim',
+  'olimorris/onedarkpro.nvim',
+  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
 
   'machakann/vim-sandwich', -- surround
 
@@ -625,8 +679,15 @@ local plugins = {
           color = 'StatusLineNC',
         },
         sections = {
+          lualine_a = {},
           lualine_b = {
             'diagnostics',
+          },
+          lualine_c = {
+            {
+              'filename',
+              path = 1,
+            },
           },
           lualine_x = {
             'require("lsp-progress").progress()',
@@ -712,7 +773,33 @@ end
 if not vim.g.vscode then
   require('lazy').setup(plugins, {})
 
+  -- vim.o.background = 'light'
+  -- vim.o.guifont = 'JetBrainsMonoNL NFM Light:h13'
+
+  vim.o.background = 'dark'
+  vim.o.guifont = 'JetBrainsMonoNL NFM Thin:h13'
+
   vim.cmd.colorscheme 'everforest'
+
+  vim.g.neovide_position_animation_length = 0.00
+  vim.g.neovide_cursor_animation_length = 0.00
+  vim.g.neovide_cursor_trail_size = 0
+  vim.g.neovide_cursor_animate_in_insert_mode = false
+  vim.g.neovide_cursor_animate_command_line = false
+  vim.g.neovide_scroll_animation_far_lines = 0
+  vim.g.neovide_scroll_animation_length = 0.00
+  vim.g.neovide_cursor_vfx_mode = ''
+
+  -- vim.api.nvim_create_autocmd('OptionSet', {
+  --   pattern = 'background',
+  --   callback = function()
+  --     if vim.v.option_new == 'light' then
+  --       vim.o.guifont = 'JetBrainsMonoNL NFM Light:h13'
+  --     else
+  --       vim.o.guifont = 'JetBrainsMonoNL NFM Thin:h13'
+  --     end
+  --   end,
+  -- })
 end
 
 -- Take me to where I was when last edited a file
