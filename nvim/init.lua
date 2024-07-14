@@ -205,6 +205,7 @@ local plugins = {
     opts = {
       cmdline = { enabled = false },
       messages = { enabled = false },
+      popupmenu = { enabled = false },
       lsp = {
         progress = { enabled = false },
         message = { enabled = false },
@@ -222,7 +223,7 @@ local plugins = {
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      -- "rcarriga/nvim-notify",
+      -- 'rcarriga/nvim-notify',
     },
   },
 
@@ -511,7 +512,6 @@ local plugins = {
 
         performance = {
           debounce = 200,
-          max_view_entries = 20,
         },
 
         -- For an understanding of why these mappings were
@@ -655,11 +655,16 @@ local plugins = {
   {
     'sainnhe/everforest',
     priority = 1000,
+    init = function()
+      vim.cmd.colorscheme 'everforest'
+    end,
   },
+  'sainnhe/gruvbox-material',
   'sainnhe/edge',
-  -- 'navarasu/onedark.nvim',
+  'sainnhe/sonokai',
   'olimorris/onedarkpro.nvim',
   { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+  --
 
   'machakann/vim-sandwich', -- surround
 
@@ -690,7 +695,11 @@ local plugins = {
             },
           },
           lualine_x = {
-            'require("lsp-progress").progress()',
+            {
+              function()
+                return require('lsp-progress').progress()
+              end,
+            },
             {
               'filetype',
               icons_enabled = false,
@@ -778,8 +787,6 @@ if not vim.g.vscode then
 
   vim.o.background = 'dark'
   vim.o.guifont = 'JetBrainsMonoNL NFM Thin:h13'
-
-  vim.cmd.colorscheme 'everforest'
 
   vim.g.neovide_position_animation_length = 0.00
   vim.g.neovide_cursor_animation_length = 0.00
