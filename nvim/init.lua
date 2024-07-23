@@ -349,6 +349,7 @@ local plugins = {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {},
+        tsserver = {},
         pyright = {
           settings = {
             python = {
@@ -662,6 +663,7 @@ local plugins = {
   'sainnhe/gruvbox-material',
   'sainnhe/edge',
   'sainnhe/sonokai',
+  { 'zenbones-theme/zenbones.nvim', dependencies = { 'rktjmp/lush.nvim' } },
   'olimorris/onedarkpro.nvim',
   { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
   --
@@ -684,16 +686,16 @@ local plugins = {
           color = 'StatusLineNC',
         },
         sections = {
-          lualine_a = {},
-          lualine_b = {
-            'diagnostics',
-          },
-          lualine_c = {
+          lualine_a = {
             {
               'filename',
               path = 1,
             },
           },
+          lualine_b = {
+            'diagnostics',
+          },
+          lualine_c = {},
           lualine_x = {
             {
               function()
@@ -724,7 +726,9 @@ local plugins = {
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help ibl`
     main = 'ibl',
-    opts = {},
+    opts = {
+      indent = { char = '▏' },
+    },
   },
 
   {
@@ -782,11 +786,12 @@ end
 if not vim.g.vscode then
   require('lazy').setup(plugins, {})
 
-  -- vim.o.background = 'light'
-  -- vim.o.guifont = 'JetBrainsMonoNL NFM Light:h13'
-
-  vim.o.background = 'dark'
-  vim.o.guifont = 'JetBrainsMonoNL NFM Thin:h13'
+  if vim.fn.has 'gui_running' == 1 then
+    vim.o.background = 'light'
+    vim.o.guifont = 'JetBrainsMonoNL NFM Light:h13'
+    -- vim.o.background = 'dark'
+    --vim.o.guifont = 'JetBrainsMonoNL NFM Thin:h13'
+  end
 
   vim.g.neovide_position_animation_length = 0.00
   vim.g.neovide_cursor_animation_length = 0.00
