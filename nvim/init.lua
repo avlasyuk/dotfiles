@@ -87,6 +87,8 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
+  'tpope/vim-dispatch',
+
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
@@ -109,6 +111,15 @@ local plugins = {
       require('which-key').register({
         ['<leader>h'] = { 'Git [H]unk' },
       }, { mode = 'v' })
+    end,
+  },
+
+  -- { 'stevearc/overseer.nvim', opts = {} },
+
+  {
+    'jpalardy/vim-slime',
+    config = function()
+      vim.g.slime_target = 'tmux'
     end,
   },
 
@@ -229,6 +240,7 @@ local plugins = {
 
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
+    -- event = 'VeryLazy',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
@@ -355,14 +367,16 @@ local plugins = {
             python = {
               analysis = {
                 extraPaths = {
-                  '/home/avlasyuk/arc/arcadia/yt/python',
-                  '/home/avlasyuk/arc/arcadia',
+                  '~/arc/arcadia/yt/python',
+                  '~/arc/arcadia/library/python',
+                  '~/arc/arcadia',
                 },
                 typeCheckingMode = 'basic',
               },
             },
           },
         },
+        ruff = {},
 
         lua_ls = {
           -- cmd = {...},
@@ -393,8 +407,6 @@ local plugins = {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'isort',
-        'black',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -412,6 +424,8 @@ local plugins = {
       }
     end,
   },
+
+  -- { 'aserowy/tmux.nvim', opts = {} },
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -434,7 +448,7 @@ local plugins = {
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
         return {
-          timeout_ms = 500,
+          timeout_ms = 5000,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
@@ -442,7 +456,7 @@ local plugins = {
         lua = { 'stylua' },
         cpp = { 'clang-format' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
+        python = { 'ruff_format' },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
@@ -648,8 +662,10 @@ local plugins = {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('nvim-tree').setup()
-      vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { silent = true, desc = 'Toggle file tree' })
     end,
+    keys = {
+      { '<leader>tt', '<CMD>NvimTreeToggle<CR>', silent = true, desc = 'Toggle file tree' },
+    },
   },
 
   -- [[ Colorscheme ]]
@@ -660,13 +676,15 @@ local plugins = {
       vim.cmd.colorscheme 'everforest'
     end,
   },
-  'sainnhe/gruvbox-material',
-  'sainnhe/edge',
-  'sainnhe/sonokai',
+  -- 'sainnhe/gruvbox-material',
+  -- 'sainnhe/edge',
+  -- 'sainnhe/sonokai',
   { 'zenbones-theme/zenbones.nvim', dependencies = { 'rktjmp/lush.nvim' } },
-  'olimorris/onedarkpro.nvim',
-  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+  -- 'olimorris/onedarkpro.nvim',
+  -- { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
   --
+
+  { 'stevearc/dressing.nvim', opts = {} },
 
   'machakann/vim-sandwich', -- surround
 
@@ -735,10 +753,12 @@ local plugins = {
     'ivanesmantovich/xkbswitch.nvim',
     opts = {},
     enabled = vim.fn.has 'mac' == 1,
+    event = { 'FocusGained', 'CmdlineLeave', 'InsertLeave', 'FocusLost', 'InsertEnter' },
   },
 
   {
     'folke/trouble.nvim',
+    enabled = false,
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {},
     keys = {
@@ -790,7 +810,7 @@ if not vim.g.vscode then
     vim.o.background = 'light'
     vim.o.guifont = 'JetBrainsMonoNL NFM Light:h13'
     -- vim.o.background = 'dark'
-    --vim.o.guifont = 'JetBrainsMonoNL NFM Thin:h13'
+    -- vim.o.guifont = 'JetBrainsMonoNL NFM Thin:h13'
   end
 
   vim.g.neovide_position_animation_length = 0.00
