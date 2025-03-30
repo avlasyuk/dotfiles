@@ -51,8 +51,6 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 --vim.keymap.set('n', '<leader><space>', ':nohlsearch<CR>', { silent = true })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -89,29 +87,20 @@ local plugins = {
 
   'tpope/vim-dispatch',
 
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
-
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-    config = function() -- This is the function that runs, AFTER loading
-      require('which-key').setup()
-
+    opts = {
+      delay = 500,
       -- Document existing key chains
-      require('which-key').register {
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-        ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
-      }
-      -- visual mode
-      require('which-key').register({
-        ['<leader>h'] = { 'Git [H]unk' },
-      }, { mode = 'v' })
-    end,
+      spec = {
+        { '<leader>d', group = '[D]ocument' },
+        { '<leader>s', group = '[S]earch' },
+        { '<leader>w', group = '[W]orkspace' },
+        { '<leader>t', group = '[T]oggle' },
+        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+      },
+    },
   },
 
   -- { 'stevearc/overseer.nvim', opts = {} },
@@ -197,7 +186,20 @@ local plugins = {
       vim.keymap.set('n', '<leader>m', builtin.oldfiles, { desc = '[S]earch Recent Files' })
 
       vim.keymap.set('n', '<leader>o', function()
-        builtin.lsp_document_symbols { ignore_symbols = { 'variable' } }
+        builtin.lsp_document_symbols {
+          ignore_symbols = {
+            'namespace',
+            'variable',
+            'field',
+            'enummember',
+            'number',
+            'string',
+            'boolean',
+            'object',
+            'array',
+            'package',
+          },
+        }
       end, { desc = 'Toggle outline' })
 
       -- Slightly advanced example of overriding default behavior and theme
@@ -258,7 +260,7 @@ local plugins = {
     -- event = 'VeryLazy',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
+      { 'williamboman/mason.nvim', opts = {} }, -- NOTE: Must be loaded before dependants
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -376,22 +378,21 @@ local plugins = {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {},
-        tsserver = {},
-        pyright = {
+        ts_ls = {},
+        basedpyright = {
           settings = {
             python = {
               analysis = {
-                extraPaths = {
-                  '~/arc/arcadia/yt/python',
-                  '~/arc/arcadia/library/python',
-                  '~/arc/arcadia',
-                },
-                typeCheckingMode = 'basic',
+                typeCheckingMode = 'standard',
               },
             },
           },
         },
         ruff = {},
+
+        jinja_lsp = {
+          filetypes = { 'jinja', 'html' },
+        },
 
         lua_ls = {
           -- cmd = {...},
@@ -1026,5 +1027,17 @@ vim.keymap.set('n', '<leader>a', open_arcanum_url, { noremap = true, silent = tr
 vim.api.nvim_create_user_command('ArcanumOpen', function(opts)
   open_file_from_arcanum_url(opts.args)
 end, { nargs = '?' })
+
+vim.g.telescope_gtest_config = {
+  root_dir = nil,
+}
+require('telescope').load_extension 'gtest'
+vim.keymap.set('n', '<leader>st', '<cmd>Telescope gtest<CR>', { desc = 'Find Google Tests' })
+vim.keymap.set('n', '<leader>gr', '<cmd>Telescope run_gtest<CR>', { desc = 'Run Google Test' })
+
+require('telescope').load_extension 'endpoints'
+vim.keymap.set('n', '<leader>sy', '<cmd>Telescope endpoints<CR>', { desc = 'Find Yacare Routes' })
+
+vim.diagnostic.config { virtual_text = true }
 
 -- vim: ts=2 sts=2 sw=2 et
