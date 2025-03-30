@@ -51,8 +51,6 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 --vim.keymap.set('n', '<leader><space>', ':nohlsearch<CR>', { silent = true })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -89,29 +87,20 @@ local plugins = {
 
   'tpope/vim-dispatch',
 
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
-
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-    config = function() -- This is the function that runs, AFTER loading
-      require('which-key').setup()
-
+    opts = {
+      delay = 500,
       -- Document existing key chains
-      require('which-key').register {
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-        ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
-      }
-      -- visual mode
-      require('which-key').register({
-        ['<leader>h'] = { 'Git [H]unk' },
-      }, { mode = 'v' })
-    end,
+      spec = {
+        { '<leader>d', group = '[D]ocument' },
+        { '<leader>s', group = '[S]earch' },
+        { '<leader>w', group = '[W]orkspace' },
+        { '<leader>t', group = '[T]oggle' },
+        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+      },
+    },
   },
 
   -- { 'stevearc/overseer.nvim', opts = {} },
@@ -182,6 +171,13 @@ local plugins = {
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>sG', function()
+        builtin.live_grep {
+          additional_args = function(_)
+            return { '--case-sensitive' }
+          end,
+        }
+      end, { desc = '[S]earch by [G]rep Case Sensitive' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
@@ -190,7 +186,20 @@ local plugins = {
       vim.keymap.set('n', '<leader>m', builtin.oldfiles, { desc = '[S]earch Recent Files' })
 
       vim.keymap.set('n', '<leader>o', function()
-        builtin.lsp_document_symbols { ignore_symbols = { 'variable' } }
+        builtin.lsp_document_symbols {
+          ignore_symbols = {
+            'namespace',
+            'variable',
+            'field',
+            'enummember',
+            'number',
+            'string',
+            'boolean',
+            'object',
+            'array',
+            'package',
+          },
+        }
       end, { desc = 'Toggle outline' })
 
       -- Slightly advanced example of overriding default behavior and theme
@@ -251,7 +260,7 @@ local plugins = {
     -- event = 'VeryLazy',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
+      { 'williamboman/mason.nvim', opts = {} }, -- NOTE: Must be loaded before dependants
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -369,22 +378,21 @@ local plugins = {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {},
-        tsserver = {},
-        pyright = {
+        ts_ls = {},
+        basedpyright = {
           settings = {
             python = {
               analysis = {
-                extraPaths = {
-                  '~/arc/arcadia/yt/python',
-                  '~/arc/arcadia/library/python',
-                  '~/arc/arcadia',
-                },
-                typeCheckingMode = 'basic',
+                typeCheckingMode = 'standard',
               },
             },
           },
         },
         ruff = {},
+
+        jinja_lsp = {
+          filetypes = { 'jinja', 'html' },
+        },
 
         lua_ls = {
           -- cmd = {...},
@@ -860,6 +868,28 @@ if not vim.g.vscode then
   -- })
 end
 
+-- Create a new augroup named "LargeFile"
+-- local large_file_group = vim.api.nvim_create_augroup('LargeFile', { clear = true })
+
+-- Add an autocmd to disable features for large files
+vim.api.nvim_create_autocmd('BufReadPre', {
+  -- group = large_file_group,
+  desc = 'Optimize Neovim for large files',
+  pattern = '*.json',
+  callback = function(args)
+    -- Get the file size
+    local file = vim.fn.expand(args.file)
+    local size = vim.fn.getfsize(file)
+
+    -- If the file size is greater than 1 MB, disable certain features
+    if size > 1000000 then
+      vim.opt_local.syntax = 'off'
+      vim.opt_local.undofile = false
+      vim.opt_local.swapfile = false
+    end
+  end,
+})
+
 -- Take me to where I was when last edited a file
 vim.api.nvim_create_autocmd('BufReadPost', {
   pattern = '*',
@@ -906,5 +936,122 @@ vim.keymap.set('n', 'mm', '%', { silent = true, desc = 'Go to matching bracket' 
 
 vim.keymap.set('n', '<leader>y', ':let @+=@<CR>', { silent = true, desc = 'Copy yank buffer to clipboard' })
 vim.keymap.set('v', '<leader>y', '"+y', { silent = true, desc = 'Yank to clipboard' })
+
+local function open_arcanum_url()
+  local filepath = vim.fn.expand '%:p'
+  if filepath == '' then
+    vim.notify('No file path found!', vim.log.levels.ERROR)
+    return
+  end
+
+  local dir = vim.fn.fnamemodify(filepath, ':h')
+  local arcadia_dir = nil
+  while dir and dir ~= '/' do
+    if vim.fn.fnamemodify(dir, ':t') == 'arcadia' then
+      arcadia_dir = dir
+      break
+    end
+    local parent = vim.fn.fnamemodify(dir, ':h')
+    if parent == dir then
+      break
+    end
+    dir = parent
+  end
+
+  if not arcadia_dir then
+    vim.notify('Arcadia directory not found in the parent directories.', vim.log.levels.ERROR)
+    return
+  end
+
+  local relative_path = filepath:sub(#arcadia_dir + 2)
+  if relative_path == '' then
+    vim.notify('Current file is the arcadia directory itself?', vim.log.levels.ERROR)
+    return
+  end
+
+  local line_num = vim.api.nvim_win_get_cursor(0)[1]
+  local url = string.format('https://a.yandex-team.ru/arcadia/%s#L%d', relative_path, line_num)
+
+  print(url)
+end
+
+local function open_file_from_arcanum_url(url)
+  -- If no URL is provided, prompt the user.
+  if not url or url == '' then
+    url = vim.fn.input 'Arcadia URL: '
+  end
+  if url == '' then
+    vim.notify('No URL provided!', vim.log.levels.ERROR)
+    return
+  end
+
+  -- First, try to capture both the relative path and a line number.
+  -- The URL format may be:
+  --   https://a.yandex-team.ru/arcadia/<relative_path>[?query]#L<line_number>
+  local relative_path, line_str = url:match 'arcadia/([^?#]+)[^#]*#L(%d+)'
+  if not relative_path then
+    -- No line number provided, so just match the relative path.
+    relative_path = url:match 'arcadia/([^?#]+)'
+  end
+
+  local line_num = tonumber(line_str) -- May be nil if not provided.
+
+  -- Search upward from the current working directory for a directory named "arcadia".
+  local cwd = vim.fn.getcwd()
+  local dir = cwd
+  local arcadia_dir = nil
+  while dir and dir ~= '/' do
+    if vim.fn.fnamemodify(dir, ':t') == 'arcadia' then
+      arcadia_dir = dir
+      break
+    end
+    local parent = vim.fn.fnamemodify(dir, ':h')
+    if parent == dir then
+      break
+    end
+    dir = parent
+  end
+
+  if not arcadia_dir then
+    vim.notify("Local 'arcadia' directory not found in parent directories of " .. cwd, vim.log.levels.ERROR)
+    return
+  end
+
+  local local_file = arcadia_dir .. '/' .. relative_path
+
+  if vim.fn.filereadable(local_file) == 0 then
+    vim.notify('File not found: ' .. local_file, vim.log.levels.ERROR)
+    return
+  end
+
+  -- Open the file.
+  vim.cmd('edit ' .. vim.fn.fnameescape(local_file))
+
+  if line_num then
+    local total_lines = vim.api.nvim_buf_line_count(0)
+    if line_num > total_lines then
+      line_num = total_lines
+    end
+    vim.api.nvim_win_set_cursor(0, { line_num, 0 })
+  end
+end
+
+vim.keymap.set('n', '<leader>a', open_arcanum_url, { noremap = true, silent = true })
+
+vim.api.nvim_create_user_command('ArcanumOpen', function(opts)
+  open_file_from_arcanum_url(opts.args)
+end, { nargs = '?' })
+
+vim.g.telescope_gtest_config = {
+  root_dir = nil,
+}
+require('telescope').load_extension 'gtest'
+vim.keymap.set('n', '<leader>st', '<cmd>Telescope gtest<CR>', { desc = 'Find Google Tests' })
+vim.keymap.set('n', '<leader>gr', '<cmd>Telescope run_gtest<CR>', { desc = 'Run Google Test' })
+
+require('telescope').load_extension 'endpoints'
+vim.keymap.set('n', '<leader>sy', '<cmd>Telescope endpoints<CR>', { desc = 'Find Yacare Routes' })
+
+vim.diagnostic.config { virtual_text = true }
 
 -- vim: ts=2 sts=2 sw=2 et
