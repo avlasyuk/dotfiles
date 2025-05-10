@@ -1,0 +1,14 @@
+getantidote/use-omz
+
+ohmyzsh/ohmyzsh path:lib
+
+ohmyzsh/ohmyzsh path:plugins/git
+ohmyzsh/ohmyzsh path:plugins/fzf
+
+zsh-users/zsh-completions path:src kind:fpath
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-history-substring-search
+zdharma-continuum/fast-syntax-highlighting
+mrjohannchang/zsh-interactive-cd
+
+ohmyzsh/ohmyzsh path:plugins/macos conditional:is-macos
