@@ -113,6 +113,37 @@ local plugins = {
     end,
   },
 
+  {
+    'olimorris/codecompanion.nvim',
+    opts = {
+      adapters = {
+        eliza_anthropic = function()
+          return require('codecompanion.adapters').extend('anthropic', {
+            url = 'https://api.eliza.yandex.net/raw/anthropic/v1/messages',
+            env = {
+              api_key = 'cmd:cat ~/.eliza_token',
+            },
+          })
+        end,
+      },
+      strategies = {
+        chat = {
+          adapter = 'eliza_anthropic',
+        },
+        inline = {
+          adapter = 'eliza_anthropic',
+        },
+        cmd = {
+          adapter = 'eliza_anthropic',
+        },
+      },
+    },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+  },
+
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
