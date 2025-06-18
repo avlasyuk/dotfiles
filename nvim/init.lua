@@ -113,6 +113,37 @@ local plugins = {
     end,
   },
 
+  {
+    'olimorris/codecompanion.nvim',
+    opts = {
+      adapters = {
+        eliza_anthropic = function()
+          return require('codecompanion.adapters').extend('anthropic', {
+            url = 'https://api.eliza.yandex.net/raw/anthropic/v1/messages',
+            env = {
+              api_key = 'cmd:cat ~/.eliza_token',
+            },
+          })
+        end,
+      },
+      strategies = {
+        chat = {
+          adapter = 'eliza_anthropic',
+        },
+        inline = {
+          adapter = 'eliza_anthropic',
+        },
+        cmd = {
+          adapter = 'eliza_anthropic',
+        },
+      },
+    },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+  },
+
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
@@ -1026,14 +1057,16 @@ vim.api.nvim_create_user_command('ArcanumOpen', function(opts)
   open_file_from_arcanum_url(opts.args)
 end, { nargs = '?' })
 
+-- require('telescope').load_extension 'gtest'
+-- require('telescope').load_extension 'endpoints'
+
 vim.g.telescope_gtest_config = {
   root_dir = nil,
 }
-require('telescope').load_extension 'gtest'
+
 vim.keymap.set('n', '<leader>st', '<cmd>Telescope gtest<CR>', { desc = 'Find Google Tests' })
 vim.keymap.set('n', '<leader>gr', '<cmd>Telescope run_gtest<CR>', { desc = 'Run Google Test' })
 
-require('telescope').load_extension 'endpoints'
 vim.keymap.set('n', '<leader>sy', '<cmd>Telescope endpoints<CR>', { desc = 'Find Yacare Routes' })
 
 vim.diagnostic.config { virtual_text = true }
