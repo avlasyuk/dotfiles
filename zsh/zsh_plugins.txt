@@ -10,5 +10,3 @@ zsh-users/zsh-autosuggestions
 zsh-users/zsh-history-substring-search
 zdharma-continuum/fast-syntax-highlighting
 mrjohannchang/zsh-interactive-cd
-
-ohmyzsh/ohmyzsh path:plugins/macos conditional:is-macos
