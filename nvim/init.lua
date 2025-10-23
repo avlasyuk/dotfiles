@@ -114,34 +114,34 @@ local plugins = {
   },
 
   {
-    'olimorris/codecompanion.nvim',
-    opts = {
-      adapters = {
-        eliza_anthropic = function()
-          return require('codecompanion.adapters').extend('anthropic', {
-            url = 'https://api.eliza.yandex.net/raw/anthropic/v1/messages',
-            env = {
-              api_key = 'cmd:cat ~/.eliza_token',
-            },
-          })
-        end,
-      },
-      strategies = {
-        chat = {
-          adapter = 'eliza_anthropic',
-        },
-        inline = {
-          adapter = 'eliza_anthropic',
-        },
-        cmd = {
-          adapter = 'eliza_anthropic',
-        },
-      },
-    },
+    'NickvanDyke/opencode.nvim',
     dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
+      -- Recommended for `ask()` and `select()`.
+      -- Required for `toggle()`.
+      { 'folke/snacks.nvim', opts = { input = {}, picker = {} } },
     },
+    config = function()
+      vim.g.opencode_opts = {
+        -- Your configuration, if any — see `lua/opencode/config.lua`
+      }
+
+      -- Required for `vim.g.opencode_opts.auto_reload`
+      vim.opt.autoread = true
+
+      -- Recommended/example keymaps
+      -- stylua: ignore start
+      vim.keymap.set({ 'n', 'x' }, '<leader>oa', function() require('opencode').ask('@this: ', { submit = true }) end, { desc = 'Ask about this' })
+      vim.keymap.set({ 'n', 'x' }, '<leader>os', function() require('opencode').select() end, { desc = 'Select prompt' })
+      vim.keymap.set({ 'n', 'x' }, '<leader>o+', function() require('opencode').prompt '@this' end, { desc = 'Add this' })
+      vim.keymap.set('n', '<leader>ot', function() require('opencode').toggle() end, { desc = 'Toggle embedded' })
+      vim.keymap.set('n', '<leader>oc', function() require('opencode').command() end, { desc = 'Select command' })
+      vim.keymap.set('n', '<leader>on', function() require('opencode').command 'session_new' end, { desc = 'New session' })
+      vim.keymap.set('n', '<leader>oi', function() require('opencode').command 'session_interrupt' end, { desc = 'Interrupt session' })
+      vim.keymap.set('n', '<leader>oA', function() require('opencode').command 'agent_cycle' end, { desc = 'Cycle selected agent' })
+      vim.keymap.set('n', '<S-C-u>', function() require('opencode').command 'messages_half_page_up' end, { desc = 'Messages half page up' })
+      vim.keymap.set('n', '<S-C-d>', function() require('opencode').command 'messages_half_page_down' end, { desc = 'Messages half page down' })
+      -- stylua: ignore end
+    end,
   },
 
   { -- Fuzzy Finder (files, lsp, etc)
@@ -216,7 +216,7 @@ local plugins = {
 
       vim.keymap.set('n', '<leader>m', builtin.oldfiles, { desc = '[S]earch Recent Files' })
 
-      vim.keymap.set('n', '<leader>o', function()
+      vim.keymap.set('n', '<leader>O', function()
         builtin.lsp_document_symbols {
           ignore_symbols = {
             'namespace',
@@ -306,6 +306,11 @@ local plugins = {
           local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
+
+          -- Jump to the definition of the word under your cursor.
+          --  This is where a variable was first declared, or where a function is defined, etc.
+          --  To jump back, press <C-t>.
+          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
